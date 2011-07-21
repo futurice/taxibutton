@@ -3,7 +3,7 @@
 (function($) {
     var CLOCK_UPDATE_TIMEOUT_MILLIS = 100;
     var PAGE_RELOAD_INTERVAL_MILLIS = 1000*60*30;
-    var REITTIOPAS_REFRESH_TIMEOUT_MILLIS = 1000*10;
+    var REITTIOPAS_REFRESH_TIMEOUT_MILLIS = 1000*60*1;
     var WEATHER_REFRESH_TIMEOUT_MILLIS = 1000*60*5;
     
     var REITTIOPAS_BASE_URL = 'http://api.reittiopas.fi/public-ytv/fi/api/?user=futurice&pass=9e0h2s3h&stop=';
@@ -13,7 +13,10 @@
     var WEATHERBUG_API_CODE = 'A4673533785';
     var WEATHERBUG_BASE_URL = 'http://' + WEATHERBUG_API_CODE + '.api.wxbug.net/getLiveWeatherRSS.aspx';
 
+    // Will ignore buses of the same line with this amount or less minutes in between.
     var TIME_LIMIT = 10;
+    // Set this to ignore time limit above.
+    var IGNORE_TIME_LIMIT = true;
     var ARRIVAL_ITEMS = 4;
     
     var now = new Date();
@@ -107,7 +110,7 @@
         for (var i=0; i<savedItems.length; ++i) {
             var item = savedItems[i];
             var timeDiff = (evaluateItem.time.getHours()*60 + evaluateItem.time.getMinutes()) - (item.time.getHours()*60 + item.time.getMinutes());
-            if (evaluateItem.busLineName === item.busLineName && (timeDiff <= TIME_LIMIT)) {
+            if (evaluateItem.busLineName === item.busLineName && (timeDiff <= TIME_LIMIT && !IGNORE_TIME_LIMIT)) {
                 return false;
             }
         }
@@ -215,7 +218,6 @@
     /*
      * Other
      */
-    
     $(document).ready(function() {
 		updateTime();
         refreshReittiopasData();
