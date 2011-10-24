@@ -18,6 +18,9 @@
     // Set this to ignore time limit above.
     var IGNORE_TIME_LIMIT = true;
     var ARRIVAL_ITEMS = 4;
+
+    // Set this to true, if this display has a TaxiButton(tm)
+    var TAXI_BUTTON = false;
     
     var now = new Date();
     
@@ -215,6 +218,28 @@
         setTimeout(refreshWeatherForecasts, WEATHER_REFRESH_TIMEOUT_MILLIS);
     }
     
+    function progressDots(i) {
+	if($('.processing').is(':visible')){
+	    $('.dot'+i).fadeOut(450,function(){
+		progressDots((i+1)%3);
+	    });
+	    $('.dot'+(i+1)%3).fadeIn();
+	    $('.dot'+(i+2)%3).fadeIn();
+	}
+    }
+
+    function resetTaxi() {
+	var taxi = "";
+
+	if(TAXI_BUTTON) {
+	    taxi = '<h2 id="prefer"><div class="glare"></div>Prefer a taxi?</h2><p class="no_orders">Push the Taxi-button :)<br/><img src="arrow-down.png"></img></p><p class="orders"></p>';
+	}else{
+	    taxi = '<h2><div class="glare"></div>Prefer a taxi?</h2><p>Send the following SMS<br />"<strong>helsinki vattuniemenranta 2</strong>"<br /> to <strong>13170</strong> <em>or</em><br/>call <strong>0100 0700</strong></p>';
+	}
+
+	$('#taxi').html(taxi);
+    }
+
     /*
      * Other
      */
@@ -222,5 +247,46 @@
 		updateTime();
         refreshReittiopasData();
         refreshWeatherForecasts();
+
+	// Show TaxiButton(tm) UI or normal
+	resetTaxi();
+
+	if(TAXI_BUTTON){
+	    $('#prefer').live('click', function() {
+		if(!$('.orders').is(':visible')){
+		    $('.no_orders').hide();
+		    $('#taxi').animate({'background-color':'#FFCC00 !important'},350);
+		}
+		$('.orders').append('<p class="taxi_wrap processing">Processing<span class="dot0">.</span><span class="dot1">.</span><span class="dot2">.</span></p>');
+		$('.orders').fadeIn();
+		progressDots(0);
+	    });
+
+	    $('#taxi .processing').live('click', function() {
+		$(this).addClass('response');
+		$(this).append('<br/>Order #'+Math.floor(Math.random()*1000));
+	    });
+
+	    $('#taxi .response').live('click', function() {
+		var rand = Math.floor(Math.random()*5);
+		$(this).removeClass('response');
+		if (rand == 0) {
+		    //fail
+		    $(this).addClass('fail');
+		    $(this).html('Taxi order failed! :(');
+		}else{
+		    //ok
+		    $(this).addClass('success');
+		    $(this).html('Taxi #'+Math.floor(Math.random()*1000)+' ordered!');
+		}
+		var that = this;
+		setTimeout(function(){
+		    $(that).fadeOut(250);
+		    setTimeout(function(){ $(that).remove(); }, 300);
+    setTimeout(function(){ if($('.taxi_wrap').length==0) { $('.orders').hide(); $('.no_orders').fadeIn(250); $('#taxi').animate({'background-color':'#4C9018 !important'},500); }}, 500);
+		},3000);
+	    });
+	}
+
     });
 }(jQuery));
