@@ -7,7 +7,7 @@ $messages = $folder."messages";
 
 $messageLines = explode(" ",exec("wc -l ".$messages));
 
-if($messageLines[0] + 1 > 10){ #rotate message file
+if($messageLines[0] + 1 > 500){ #rotate message file
 
   rename($messages,$folder."old_messages/messagesTo".time());
 

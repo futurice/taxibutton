@@ -282,14 +282,14 @@
 		    }else if(key == "TILAUS"){
 			removeFirstProcessing("no_reset");
 			$('.orders').append('<p class="taxi_wrap response">Waiting for taxi confirmation (order #'+value+')</p>');
-			setTimeout(removeFirstResponse, 60000);
+			setTimeout(removeFirstResponse, 120000);
 		    }else if(key == "TAKSI"){
 			removeFirstResponse("no_reset");
-			$('.orders').append('<p class="taxi_wrap success">Taxi #'+value+' has confirmed your order! \\o/</p>');
+			$('.orders').append('<p class="taxi_wrap success">Taxi #'+value+' is coming to pick you up! \\o/</p>');
 			setTimeout(removeFirstSuccess, 60000);
 		    }else if(key == "VARATTU"){
 			removeFirstResponse("no_reset");
-			$('.orders').append('<p class="taxi_wrap fail">There\'s no taxis available at the moment, please try again shortly.</p>');
+			$('.orders').append('<p class="taxi_wrap fail">There are no taxis available at the moment, please try again.</p>');
 			setTimeout(removeFirstFail, 10000);
 		    }else if(key == "ERROR"){
 			removeFirstResponse("no_reset");

@@ -7,7 +7,7 @@ class TaxiDaemon(Daemon):
 	def run(self):
 		folder = '/var/run/taxi/'
 		log = open('/var/log/taxi_log.txt','a')
-		url = 'http://localhost:13013/cgi-bin/sendsms?username=kanneluser&password=asdfasdf&to=0407780991&text=Helsinki+Vattuniemenranta+2+Futurice+Oy'
+		url = 'http://localhost:13013/cgi-bin/sendsms?username=kanneluser&password=asdfasdf&to=13170&text=Helsinki+Vattuniemenranta+2+Futurice+Oy'
 
 		#Make sure that necessary folder(s) exists
 		if not os.path.exists(folder+'old_messages'):
