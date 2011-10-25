@@ -20,7 +20,7 @@
     var ARRIVAL_ITEMS = 4;
 
     // Set this to true, if this display has a TaxiButton(tm)
-    var TAXI_BUTTON = false;
+    var TAXI_BUTTON = true;
     var LAST_UPDATE = Math.round(new Date().getTime()/1000); //Last TaxiUpdate, in seconds since epoch
     
     var now = new Date();
@@ -259,7 +259,7 @@
     });
 
     function updateTaxiInformation(){
-	$.get('messages.txt',function(data){
+	$.get('/var/run/taxi/messages',function(data){
 	    var lines = data.split("\n");
 	    lines.pop(); //remove the extra line
 	    for(var i in lines){
