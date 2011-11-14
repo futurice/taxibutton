@@ -278,11 +278,11 @@
 			$('.orders').append('<p class="taxi_wrap processing">Processing<span class="dot0">.</span><span class="dot1">.</span><span class="dot2">.</span></p>');
 			$('.orders').fadeIn();
 			progressDots(0);
-			setTimeout(removeFirstProcessing, 120000);
+			setTimeout(removeFirstProcessing, 480000);
 		    }else if(key == "TILAUS"){
 			removeFirstProcessing("no_reset");
-			$('.orders').append('<p class="taxi_wrap response">Waiting for taxi confirmation (order #'+value+')</p>');
-			setTimeout(removeFirstResponse, 120000);
+			$('.orders').append('<p class="taxi_wrap response">Got response, waiting for taxi confirmation (max 8min).</p>');
+			setTimeout(removeFirstResponse, 480000);
 		    }else if(key == "TAKSI"){
 			removeFirstResponse("no_reset");
 			$('.orders').append('<p class="taxi_wrap success">Taxi #'+value+' is coming to pick you up! \\o/</p>');
