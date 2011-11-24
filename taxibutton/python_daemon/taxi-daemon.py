@@ -7,6 +7,7 @@ class TaxiDaemon(Daemon):
 	def run(self):
 		folder = '/var/run/taxi/'
 		log = open('/var/log/taxi_log.txt','a')
+		log_serial = open('/var/log/taxi_serial_output.txt','a')
 		url = 'http://localhost:13013/cgi-bin/sendsms?username=kanneluser&password=asdfasdf&to=13170&text=Helsinki+Vattuniemenranta+2+Futurice+Oy'
 
 		#Make sure that necessary folder(s) exists
@@ -29,20 +30,26 @@ class TaxiDaemon(Daemon):
 			# Read line from serial port (sends ".\r\n")
 			l = ser.readline()
 
-			if(len(l) != 0 and (not os.path.exists(folder+'lock') or (int(time.time()) - os.path.getmtime(folder+'lock')) > 120)): #2min lockdown
-				open(folder+'lock','w')
-				m = open(folder+'messages','a')
-				log.write(str(datetime.datetime.now())+' Nappulaa painettu onnistuneesti\n')
-				log.flush()
-				m.write(str(int(time.time()))+":CLICK 0\n")
-				m.close()
-				urllib2.urlopen(url)
-				prevClick = time.time()
+			if len(l) != 0:
 
-			elif(len(l) != 0 and time.time() - prevClick > 0.5):
-				log.write(str(datetime.datetime.now())+' Nappulaa painettu kesken lukituksen\n')
-				log.flush()
-				prevClick = time.time()
+				if not os.path.exists(folder+'lock') or int(time.time()) - os.path.getmtime(folder+'lock') > 480: #8min lockdown according to sms-taxi spec
+					open(folder+'lock','w')
+					m = open(folder+'messages','a')
+					log.write(str(datetime.datetime.now())+' Nappulaa painettu onnistuneesti\n')
+					log.flush()
+					m.write(str(int(time.time()))+":CLICK 0\n")
+					m.close()
+					urllib2.urlopen(url)
+					prevClick = time.time()
+
+				elif time.time() - prevClick > 0.5:
+					log.write(str(datetime.datetime.now())+' Nappulaa painettu kesken lukituksen\n')
+					log.flush()
+					prevClick = time.time()
+
+					
+				log_serial.write(str(datetime.datetime.now())+" "+str(l))
+				log_serial.flush()
 
 if __name__ == "__main__":
 	daemon = TaxiDaemon('/tmp/taxi-daemon.pid')
