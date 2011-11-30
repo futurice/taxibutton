@@ -292,7 +292,11 @@
 			$('.orders').append('<p class="taxi_wrap fail">There are no taxis available at the moment, please try again.</p>');
 			setTimeout(removeFirstFail, 10000);
 		    }else if(key == "ERROR"){
-			removeFirstResponse("no_reset");
+			if($('.taxi_wrap.response').size() > 0) {
+			    removeFirstResponse("no_reset");
+			}else{
+			    removeFirstProcessing("no_reset");
+			}
 			$('.orders').append('<p class="taxi_wrap fail">An error happened, try again.</p>');
 			setTimeout(removeFirstFail, 10000);
 		    }
