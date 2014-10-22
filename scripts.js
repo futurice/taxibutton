@@ -292,6 +292,15 @@
 			removeFirstResponse("no_reset");
 			$('.orders').append('<p class="taxi_wrap fail">There are no taxis available at the moment, please try again.</p>');
 			setTimeout(removeFirstFail, 10000);
+		    }else if(key == "CLICK_TOO_SHORT"){
+			if(!$('.orders').is(':visible')){
+			    $('.no_orders').hide();
+			    $('#taxi').animate({'background-color':'#FFCC00 !important'},350);
+			}
+			// the number of milliseconds is in ‘value’
+			$('.orders').append('<p class="taxi_wrap fail">Button pressed too shortly, please hold it longer.</p>');
+			$('.orders').fadeIn();
+			setTimeout(removeFirstFail, 10000);
 		    }else if(key == "ERROR"){
 			if($('.taxi_wrap.response').size() > 0) {
 			    removeFirstResponse("no_reset");

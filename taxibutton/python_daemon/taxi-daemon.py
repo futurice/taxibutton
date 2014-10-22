@@ -26,7 +26,6 @@ class TaxiDaemon(Daemon):
 		ser = serial.Serial('/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_A9007V5w-if00-port0',9600,timeout=2)
 		log.write('Serial port open, starting daemon run\n')
 		log.flush()
-		prevClick = 0.0
 
 		while True:
 			# Read line from serial port (sends ".\r\n")
@@ -41,21 +40,22 @@ class TaxiDaemon(Daemon):
 
 				if "released" in l_str: # button released
 					duration = int(l_str.split(" ")[2][0:-2])
-					if duration > 100: # over 100ms push
-						if not os.path.exists(folder+'lock') or int(time.time()) - os.path.getmtime(folder+'lock') > 480: # 8min lockdown(sms-taxi spec)
-							open(folder+'lock','w')
-							m = open(folder+'messages','a')
-							log.write(str(datetime.datetime.now())+' Nappulaa painettu onnistuneesti\n')
-							log.flush()
-							m.write(str(int(time.time()))+":CLICK 0\n")
-							m.close()
+					if not os.path.exists(folder+'lock') or int(time.time()) - os.path.getmtime(folder+'lock') > 480: # 8min lockdown(sms-taxi spec)
+						btn_press_successful = duration > 100 # over 100ms push
+						with open(folder+'messages','a') as m:
+							if btn_press_successful:
+								open(folder+'lock','w')
+								log.write(str(datetime.datetime.now())+' Nappulaa painettu onnistuneesti\n')
+								log.flush()
+								m.write(str(int(time.time()))+":CLICK 0\n")
+							else:
+								log.write(str(datetime.datetime.now())+' Button press too short!\n')
+								log.flush()
+								m.write(str(int(time.time()))+":CLICK_TOO_SHORT " + str(duration) + "\n")
+						if btn_press_successful:
 							urllib2.urlopen(url)
-							prevClick = time.time()
-						else:
-							log.write(str(datetime.datetime.now())+' Nappulaa painettu kesken lukituksen\n')
-							log.flush()
 					else:
-						log.write(str(datetime.datetime.now())+' Nappulaa painettu liian nopsaan!\n')
+						log.write(str(datetime.datetime.now())+' Nappulaa painettu kesken lukituksen\n')
 						log.flush()
 
 if __name__ == "__main__":
