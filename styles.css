@@ -40,7 +40,7 @@ UNIQUE ELEMENTS and their contents
 
 div#wrapper{ position: relative; width: 960px; height: 1800px; margin: 0 auto; padding: 60px; overflow: hidden; }
 
-div#header{ width: 100%; height: 190px; margin-bottom: 60px; font-size: 30px; color: #878681; overflow: hidden; }
+div#header{ width: 100%; height: 215px; margin-bottom: 60px; font-size: 30px; color: #878681; overflow: hidden; }
 div#header img#logo{ position: absolute; top: 0px; right: 30px; z-index: 1000; }
 div#header div#datetime{ float: left; margin-right: 40px; text-align: center; line-height: 1.2; }
 div#header div#datetime #date{ display: block; }

@@ -179,7 +179,8 @@
     var CITY_CODES = {
         Helsinki: 62073,
         Tampere: 62152,
-        Berlin: 58439
+        Berlin: 58439,
+        London: 60876
     };
     
     function refreshWeatherForecastForCity(city) {
@@ -234,7 +235,7 @@
 	var taxi = "";
 
 	if(TAXI_BUTTON) {
-	    taxi = '<h2 id="prefer"><div class="glare"></div>Prefer a taxi?</h2><p class="no_orders">Push the Taxi-button :)<br/><img src="arrow-down.png"></img></p><p class="orders"></p>';
+	    taxi = '<h2 id="prefer"><div class="glare"></div>Prefer a taxi?</h2><p class="no_orders">Order one with the Taxi-button :)<br/><img src="arrow-down.png"></img></p><p class="orders"></p>';
 	}else{
 	    taxi = '<h2><div class="glare"></div>Prefer a taxi?</h2><p>Send the following SMS<br />"<strong>helsinki vattuniemenranta 2</strong>"<br /> to <strong>13170</strong> <em>or</em><br/>call <strong>0100 0700</strong></p>';
 	}
@@ -293,13 +294,7 @@
 			$('.orders').append('<p class="taxi_wrap fail">There are no taxis available at the moment, please try again.</p>');
 			setTimeout(removeFirstFail, 10000);
 		    }else if(key == "CLICK_TOO_SHORT"){
-			if(!$('.orders').is(':visible')){
-			    $('.no_orders').hide();
-			    $('#taxi').animate({'background-color':'#FFCC00 !important'},350);
-			}
-			// the number of milliseconds is in ‘value’
-			$('.orders').append('<p class="taxi_wrap fail">Button pressed too shortly, please hold it longer.</p>');
-			$('.orders').fadeIn();
+			$('.orders').append('<p class="taxi_wrap fail">Button pressed to shortly (' + value + 'ms), please hold it longer.</p>');
 			setTimeout(removeFirstFail, 10000);
 		    }else if(key == "ERROR"){
 			if($('.taxi_wrap.response').size() > 0) {
