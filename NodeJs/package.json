@@ -1,0 +1,10 @@
+{
+	"description": "RaspberryPi server for the TaxiButton",
+	"repository": {
+		"type": "git",
+		"url": ""
+	},
+	"dependencies": {
+		"onoff": "1.0.2"
+	}
+}
