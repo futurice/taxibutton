@@ -1,11 +1,12 @@
 {
-	"description": "RaspberryPi server for the TaxiButton",
+	"description": "RaspberryPi based server for the TaxiButton",
 	"repository": {
 		"type": "git",
 		"url": ""
 	},
 	"dependencies": {
 		"nodejs-websocket": "1.2.1",
-		"onoff": "1.0.2"
+		"onoff": "1.0.2",
+        "stately.js": "1.2.0"
 	}
 }

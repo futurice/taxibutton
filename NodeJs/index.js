@@ -1,34 +1,34 @@
-var ws = require("nodejs-websocket");
+var config = require('./config');
+var taxiFsm = require('./taxiFsm');
+var util = require('util');
+var ws = require('nodejs-websocket');
 var Gpio = require('onoff').Gpio;
-var button = new Gpio(18, 'in', 'both');
+var button = new Gpio(config.button.pin, 'in', 'both');
 
-var server = ws.createServer(function (connection) {
-    console.log("New connection");
-}).listen(8001, function(){
-    console.log("Started WebSocket server");
-});
+(function(){
+    util.log("Initializing...");
 
-function broadcast(message) {
-    server.connections.forEach(function (connection) {
-        connection.sendText(message);
+    var server = ws.createServer(function (connection) {
+        util.log("New connection");
+    }).listen(config.websocket.port, function(){
+        util.log("Started WebSocket server on port " + config.websocket.port);
     });
-}
 
-var i = 0;
-button.watch(function(err, value){
-    if (err) throw err;
-    console.log(i++ + ' ' + (value ? "DOWN" : "UP"));
-    broadcast(i + ' ' + (value ? "DOWN" : "UP"));
-});
+    button.watch(function(err, value){
+        if (err) throw err;
+        
+        var action = value ? taxiFsm.buttonReleased : taxiFsm.buttonPressed;
+        action();
+    });
 
-// (function readInput() {
-//     setInterval(function() {
-//         button.read(function(err, value) {
-//             console.log(i++ + ' Value: ' + value);
-//             broadcast(i + " Button " + (value ? "released" : "pressed"));
-//         });
-//     }, 1000);
-// })();
+    taxiFsm.bind(function (event, oldState, newState) {
+        var transition = oldState + ' => ' + newState;
+        
+        server.connections.forEach(function (connection) {
+            connection.sendText(transition);
+        });
+    });
+})();
 
 process.on('SIGINT', function(){
     button.unexport();

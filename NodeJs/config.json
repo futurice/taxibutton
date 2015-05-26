@@ -1,0 +1,9 @@
+{
+    "websocket": {
+        "port": 8001
+    },
+    "button":  {
+        "pin": 18,
+        "minPressDurationMs": 2500
+    }
+}
