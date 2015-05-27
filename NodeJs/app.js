@@ -55,50 +55,52 @@ smsGate.on('sending-error', function(e){
 var taxiServiceClass = require('./taxiService');
 var taxiService = new taxiServiceClass(smsGate);
 taxiService.on('orderConfirmed', function(e){
+    taxiMachine.orderConfirmed(e.orderNumber);
     util.log('DEBUG - Order confirmed #%s', e.orderNumber);
 });
 taxiService.on('taxiConfirmed', function(e){
+    taxiMachine.taxiConfirmed(e.taxiNumber);
     util.log('DEBUG - Taxi confirmed #%s', e.taxiNumber);
 });
 taxiService.on('allBusy', function(e){
+    taxiMachine.allBusy();
     util.log('DEBUG - All taxis are busy');
 });
-taxiService.on('unknown', function(e){
+taxiService.on('unknown', function(){
+    broadcast(util.format('Unknown SMS message from %s "%s"', e.phoneNumber, e.message));
     util.log('DEBUG - TaxiService unknown message from %s "%s"', e.phoneNumber, e.message);
 });
 
 /* -------------------------------- */
 
 var Gpio = require('onoff').Gpio;
-var button = new Gpio(config.button.pin, 'in', 'both');
-button.watch(function(err, value){
-    if (err) throw err;
-    
-    if(value)
-    {
-        taxiMachine.buttonReleased(function(ms) {util.log('DEBUG - Button was pressed for ' + ms + 'ms')});
-    }
-    else
-    {
-        taxiMachine.buttonPressed();
-    }
+var gpioPin = new Gpio(config.button.pin, 'in', 'both');
+var buttonClass = require('./button');
+var button = new buttonClass(gpioPin);
+button.on('released', function(e){
+    util.log('DEBUG - Button was pressed for ' + e.durationMs + 'ms');
 });
 
 /* -------------------------------- */
 
-var taxiMachine = require('./taxiMachine');
+var taxiMachineFactory = require('./taxiMachine');
+var taxiMachine = taxiMachineFactory.create(button, taxiService);
 taxiMachine.bind(function (event, oldState, newState) {
     var transition = oldState + ' => ' + newState;
+    broadcast(transition);
     util.log('INFO - ' + transition);
-
-    wsServer.connections.forEach(function (connection) {
-        connection.sendText(transition);
-    });
 });
 
 /* -------------------------------- */
 
+function broadcast(message)
+{
+    wsServer.connections.forEach(function (connection) {
+        connection.sendText(message);
+    });
+}
+
 process.on('SIGINT', function(){
-    button.unexport();
+    gpioPin.unexport();
     process.exit();
 });
