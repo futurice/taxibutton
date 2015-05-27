@@ -1,5 +1,5 @@
 var config = require('./config');
-var taxiFsm = require('./taxiFsm');
+var taxiMachine = require('./taxiMachine');
 var util = require('util');
 var ws = require('nodejs-websocket');
 var Gpio = require('onoff').Gpio;
@@ -17,13 +17,20 @@ var button = new Gpio(config.button.pin, 'in', 'both');
     button.watch(function(err, value){
         if (err) throw err;
         
-        var action = value ? taxiFsm.buttonReleased : taxiFsm.buttonPressed;
-        action();
+        if(value)
+        {
+            taxiMachine.buttonReleased(function(ms) {util.log('Button was pressed for ' + ms + 'ms')});
+        }
+        else
+        {
+            taxiMachine.buttonPressed();
+        }
     });
 
-    taxiFsm.bind(function (event, oldState, newState) {
+    taxiMachine.bind(function (event, oldState, newState) {
         var transition = oldState + ' => ' + newState;
-        
+        util.log(transition);
+
         server.connections.forEach(function (connection) {
             connection.sendText(transition);
         });

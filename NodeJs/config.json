@@ -4,6 +4,7 @@
     },
     "button":  {
         "pin": 18,
-        "minPressDurationMs": 2500
+        "debouceInterval": 500,
+        "minPressIntervalMs": 2500
     }
 }
