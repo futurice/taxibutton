@@ -1,10 +1,27 @@
 {
-    "websocket": {
-        "port": 8001
+    "httpServer" : {
+        "port": 8080
+    },
+    "webSocketServer": {
+        "port": 8081
     },
     "button":  {
         "pin": 18,
-        "debouceInterval": 500,
+        "debouceInterval": 400,
         "minPressIntervalMs": 2500
+    },
+    "smsGate": {
+        "isDebug": true,
+        "host": "localhost",
+        "port": 13013,
+        "path": "/cgi-bin/sendsms",
+        "credentials": {
+            "username": "kanneluser",
+            "password": "asdfasdf"
+        }
+    },
+    "taxiService": {
+        "phoneNumber": "13170",
+        "message": "Helsinki Annankatu 34 B  Futurice Oy"
     }
 }
