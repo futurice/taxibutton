@@ -16,7 +16,7 @@ function smsGate() {
 			that.emit('sent', {phoneNumber: phoneNumber, message: message});
 		};
 
-		if(config.smsGate.isDebug)
+		if(config.smsGate.isFaked)
 		{
 	 		emitSent();
 	 		return;
@@ -40,9 +40,9 @@ function smsGate() {
 		});
 
 		request.on('error', function(err) {
-			that.emit('send-error', {innerError: err, phoneNumber: phoneNumber, message: message});
+			that.emit('sending-error', {innerError: err, phoneNumber: phoneNumber, message: message});
 		});
-		
+
 		request.end();
 	};
 
@@ -50,4 +50,4 @@ function smsGate() {
 }
 
 util.inherits(smsGate, events.EventEmitter);
-module.exports = new smsGate();
+module.exports = smsGate;

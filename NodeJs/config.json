@@ -11,7 +11,7 @@
         "minPressIntervalMs": 2500
     },
     "smsGate": {
-        "isDebug": true,
+        "isFaked": true,
         "host": "localhost",
         "port": 13013,
         "path": "/cgi-bin/sendsms",
@@ -21,7 +21,7 @@
         }
     },
     "taxiService": {
-        "phoneNumber": "13170",
-        "message": "Helsinki Annankatu 34 B  Futurice Oy"
+        "phoneNumber": "050 4648054",
+        "orderMessage": "Helsinki Annankatu 34 B  Futurice Oy"
     }
 }
