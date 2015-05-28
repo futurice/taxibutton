@@ -1,0 +1,105 @@
+/*
+================================================================================
+CSS RESET (http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/)
+================================================================================
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td{ margin: 0; padding: 0; border: 0; outline: 0; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit; vertical-align: baseline; }
+:focus{ outline: 0; }
+ol, ul{ list-style: none; }
+table{ border-collapse: separate; border-spacing: 0; }
+caption, th, td { text-align: left; font-weight: normal; }
+blockquote:before, blockquote:after,
+q:before, q:after{ content: ""; }
+blockquote, q{ quotes: "" ""; }
+
+/*
+================================================================================
+BASIC STYLES for tags
+================================================================================
+*/
+
+body{ max-width: 1080px; max-height: 1920px; font-family: 'Droid Sans', Verdana, Arial, Helvetica, sans-serif; font-size: 60px; line-height: 1.5; color: #000; background-color: #fff; overflow: hidden; }
+h1, h2, h3, h4, h5, h6{ font-family: 'Nobile', Verdana, Arial, Helvetica, sans-serif; font-weight: bold; line-height: 1; }
+h1{ font-size: 72px; text-transform: uppercase; }
+h2{ font-size: 60px; }
+strong{ font-weight: bold; }
+
+/*
+================================================================================
+UNIQUE ELEMENTS and their contents
+================================================================================
+*/
+
+div#wrapper{ position: relative; width: 960px; height: 1800px; margin: 0 auto; padding: 60px; overflow: hidden; }
+
+div#header{ width: 100%; height: 215px; margin-bottom: 60px; font-size: 30px; color: #878681; overflow: hidden; }
+div#header img#logo{ position: absolute; top: 0px; right: 30px; z-index: 1000; }
+div#header div#datetime{ float: left; margin-right: 40px; text-align: center; line-height: 1.2; }
+div#header div#datetime #date{ display: block; }
+div#header div#datetime #time{ display: block; font-size: 128px; font-weight: bold; }
+div#header div#offices{ float: left; width: auto; font-size: 48px; line-height: 48px; }
+div#header div#offices table{ float: left; width: auto; margin-right: 10px; }
+div#header div#offices table td{ vertical-align: middle; }
+div#header div#offices table td a{ text-decoration: none; color: #878681; }
+div#header div#offices table td.conditions{ padding: 0 10px 0 20px; }
+div#header div#offices table td.conditions img{ width: 48px; height: 48px; }
+div#header div#offices table td.temp{ text-align: right; }
+div#header div#offices div.notation{ float: left; width: 168px; height: 168px; font-size: 12px; line-height: 14px; text-align: center; background-color: transparent;
+ 	-webkit-transform: rotate(-90deg); -moz-transform: rotate(-90deg); transform: rotate(-90deg); }
+
+div#buses{ margin-bottom: 132px; }
+div#buses h1, div#buses h2{ margin-bottom: 30px; }
+div#buses h1{ color: #4C9018; }
+div#buses h2{ margin-top: 30px; color: #878681; }
+div#buses h2 span{ font-size: 50%; }
+div#buses table{ width: 100%; }
+div#buses table .line{ width: 20%; }
+div#buses table .destination{ width: 20%; color: #878681; }
+div#buses table .diffTime{ width: 40%; text-align: right; }
+div#buses table .stopTime{ width: 20%; text-align: right; color: #878681; }
+
+div#taxi{ position: relative; margin: 0 -20px; padding: 40px; text-align: center; line-height: 1.25; color: #fff; background-color: #4C9018; min-height: 100px;
+	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
+	-webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.25); -moz-box-shadow: 0 0 20px rgba(0, 0, 0, 0.25); box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.25)));
+  background-image: -moz-linear-gradient(100% 100% 90deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0)); }
+div#taxi h2{ position: absolute; top: -0.9em; left: 0px; width: 100%; font-size: 72px; line-height: 1; text-align: center; text-transform: uppercase; letter-spacing: 0.25em; color: #4C9018; }
+
+div#taxi .taxi_wrap{ width: 420px; margin: auto; border-radius: 10px; -webkit-border-radius: 10px; -moz-border-radius: 10px; margin-bottom: 10px; font-size: 32px; padding: 15px; }
+div#taxi .orders{ display: none; color: #FFFFFF; }
+div#taxi .processing{ background-color: #000066 !important; }
+div#taxi .response{ background-color: #000066 !important; }
+div#taxi .fail{ background-color: #FF0000 !important; color: #FFFFFF; }
+div#taxi .success{ background-color: #4C9018 !important; color: #FFFFFF; }
+
+/* div#taxi h2{ position: relative; margin-bottom: 20px; padding: 10px; background-color: rgba(0, 0, 0, 0.1);
+	-webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px;
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 0)));
+  background-image: -moz-linear-gradient(100% 100% 90deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.1)); }
+div#taxi h2 div.glare{ position: absolute; top: 5px; left: 5px; width: 950px; height: 1px; padding: 20px 0; background-color: rgba(255, 255, 255, 0.1);
+	-webkit-border-radius: 7px; -moz-border-radius: 7px; border-radius: 7px;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255, 255, 255, 0.25)), to(rgba(255, 255, 255, 0)));
+  background-image: -moz-linear-gradient(100% 100% 90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.25)); } */
+
+/*
+================================================================================
+OTHER CLASSES
+================================================================================
+*/
+
+/* Clearfixes */
+
+.clear{ clear: both; display: block; overflow: hidden; visibility: hidden; width: 0; height: 0; }
+.clearfix:after{ clear: both; content: " "; display: block; font-size: 0; height: 0; visibility: hidden; }
+.clearfix{ display: inline-block; }
+html[xmlns] .clearfix{ display: block; }
+* html .clearfix{ zoom: 1; height: 1%; } /* IE6 */
+*:first-child+html .clearfix{ zoom: 1; height: 1%; } /* IE7 */

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+    <!--<meta http-equiv="refresh" content="1800" />--><!--just to be sure...-->
+    
+	<title>Buses</title>
+    
+	<link href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic" rel="stylesheet" />
+	<link href="http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold" rel="stylesheet" />
+	<link href="styles.css" rel="stylesheet" />
+</head>
+<body>
+	<div id="wrapper">
+		<div id="header">
+			<!-- <img id="logo" src="futurice-logo-white-bg.png" alt="Futurice" /> -->
+			<img id="logo" src="futurice-logo--green.svg" alt="Futurice"
+			  style="width: 250px; height: 100px;" />
+			<div id="datetime"><span id="date">DOW nth Month</span> <span id="time">00:00</span></div>
+			<div id="offices">
+				<table>
+					<tr id="weatherHelsinki">
+						<td class="city">Helsinki</td>
+						<td class="conditions"><img src="" /></td>
+						<td class="temp"><span class="value">?</span> &deg;C</td>
+					</tr>
+					<tr id="weatherTampere">
+						<td class="city">Tampere</td>
+						<td class="conditions"><img src="" /></td>
+						<td class="temp"><span class="value">?</span> &deg;C</td>
+					</tr>
+					<tr id="weatherBerlin">
+						<td class="city">Berlin</td>
+						<td class="conditions"><img src="" /></td>
+						<td class="temp"><span class="value">?</span> &deg;C</td>
+					</tr>
+					<tr id="weatherLondon">
+						<td class="city">London</td>
+						<td class="conditions"><img src="" /></td>
+						<td class="temp"><span class="value">?</span> &deg;C</td>
+					</tr>
+				</table>
+				<div class="notation">Powered by WeatherBug</div>
+			</div>
+		</div>
+		<div id="buses">
+			<h1>Buses</h1>
+			<h2>Short walk <span>(the Pianissimo stop, 300 m)</span></h2>
+			<table id="shortwalk_table" class="arrivalDataTable">
+				<tbody>
+				</tbody>
+			</table>
+			<h2>Long walk <span>(the S-Market stop, 900 m)</span></h2>
+			<table id="longwalk_table" class="arrivalDataTable">
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+
+		<div id="taxi">
+		</div>
+	</div>
+</body>
+
+<script src="lib/jquery-1.4.2.min.js"></script>
+<script src="scripts.js"></script>
+
+</html>
