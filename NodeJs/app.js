@@ -30,23 +30,6 @@ var appServer = app.listen(config.httpServer.port, function () {
 
 /* -------------------------------- */
 
-var ws = require('nodejs-websocket');
-var wsServer = ws.createServer(function (connection) {
-    logger.info('New WebSocket connection from %s:%s', connection.socket.remoteAddress, connection.socket.remotePort);
-}).listen(config.webSocketServer.port, function(){
-    var address = wsServer.socket.address();
-    logger.info('WebSocket server listening at %s:%s', address.address, address.port);
-});
-
-function broadcast(message)
-{
-    wsServer.connections.forEach(function (connection) {
-        connection.sendText(message);
-    });
-}
-
-/* -------------------------------- */
-
 var smsGateClass = require('./smsGate');
 var smsGate = new smsGateClass(config.smsGate);
 smsGate.on('sent', function(e){
@@ -64,7 +47,6 @@ smsGate.on('sending-error', function(e){
 var taxiServiceClass = require('./taxiService');
 var taxiService = new taxiServiceClass(smsGate, config.taxiService);
 taxiService.on('unknown', function(e){
-    broadcast(util.format('Unknown SMS message from %s "%s"', e.phoneNumber, e.message));
     logger.warning('TaxiService unknown message from %s "%s"', e.phoneNumber, e.message);
 });
 
@@ -81,10 +63,21 @@ button.on('up', function(e){
 var taxiMachineFactory = require('./taxiMachine');
 var taxiMachine = taxiMachineFactory.create(button, taxiService, config.taxiMachine);
 taxiMachine.bind(function (event, oldState, newState) {
-    var transition = oldState + ' => ' + newState;
-    broadcast(transition);
-    logger.info(transition);
+    logger.info(oldState + ' => ' + newState);
 });
+
+/* -------------------------------- */
+
+var ws = require('nodejs-websocket');
+var wsServer = ws.createServer(function (connection) {
+    logger.info('New WebSocket connection from %s:%s', connection.socket.remoteAddress, connection.socket.remotePort);
+}).listen(config.webSocketServer.port, function(){
+    var address = wsServer.socket.address();
+    logger.info('WebSocket server listening at %s:%s', address.address, address.port);
+});
+
+var webSocketNotifierClass = require('./webSocketNotifier');
+var webSocketNotifier = new webSocketNotifierClass(wsServer, taxiService, taxiMachine);
 
 /* -------------------------------- */
 
