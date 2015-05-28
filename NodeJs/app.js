@@ -63,15 +63,6 @@ smsGate.on('sending-error', function(e){
 
 var taxiServiceClass = require('./taxiService');
 var taxiService = new taxiServiceClass(smsGate, config.taxiService);
-taxiService.on('orderConfirmed', function(e){
-    logger.info('Order confirmed #%s', e.orderNumber);
-});
-taxiService.on('taxiConfirmed', function(e){
-    logger.info('Taxi confirmed #%s', e.taxiNumber);
-});
-taxiService.on('allBusy', function(e){
-    logger.info('All taxis are busy');
-});
 taxiService.on('unknown', function(e){
     broadcast(util.format('Unknown SMS message from %s "%s"', e.phoneNumber, e.message));
     logger.warning('TaxiService unknown message from %s "%s"', e.phoneNumber, e.message);
@@ -88,7 +79,7 @@ button.on('up', function(e){
 /* -------------------------------- */
 
 var taxiMachineFactory = require('./taxiMachine');
-var taxiMachine = taxiMachineFactory.create(button, taxiService);
+var taxiMachine = taxiMachineFactory.create(button, taxiService, config.taxiMachine);
 taxiMachine.bind(function (event, oldState, newState) {
     var transition = oldState + ' => ' + newState;
     broadcast(transition);
