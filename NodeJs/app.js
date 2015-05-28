@@ -48,7 +48,7 @@ function broadcast(message)
 /* -------------------------------- */
 
 var smsGateClass = require('./smsGate');
-var smsGate = new smsGateClass();
+var smsGate = new smsGateClass(config.smsGate);
 smsGate.on('sent', function(e){
     logger.info('Sent SMS to %s "%s"', e.phoneNumber, e.message);
 });
@@ -62,7 +62,7 @@ smsGate.on('sending-error', function(e){
 /* -------------------------------- */
 
 var taxiServiceClass = require('./taxiService');
-var taxiService = new taxiServiceClass(smsGate);
+var taxiService = new taxiServiceClass(smsGate, config.taxiService);
 taxiService.on('orderConfirmed', function(e){
     logger.info('Order confirmed #%s', e.orderNumber);
 });
@@ -80,7 +80,7 @@ taxiService.on('unknown', function(e){
 /* -------------------------------- */
 
 var buttonClass = require('./button');
-var button = new buttonClass();
+var button = new buttonClass(config.button);
 button.on('up', function(e){
     logger.debug('Button was down for ' + e.durationMs + 'ms');
 });
@@ -98,6 +98,6 @@ taxiMachine.bind(function (event, oldState, newState) {
 /* -------------------------------- */
 
 process.on('SIGINT', function(){
-    gpioPin.unexport();
+    button.unexport();
     process.exit();
 });

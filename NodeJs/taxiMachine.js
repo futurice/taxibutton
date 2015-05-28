@@ -8,14 +8,9 @@ var factory = {
             'IDLE': {
                 buttonDown: 'PRESSED'
             },
-            'DEBOUNCE' : {
-                debounceTimeout: function(){
-                    return this.IDLE;
-                }
-            },
             'PRESSED': {
                 buttonUp: function (durationMs) {
-                    return durationMs < config.button.minPressIntervalMs ? this.DEBOUNCE : this.ORDERING;
+                    return durationMs < config.button.minPressIntervalMs ? this.IDLE : this.ORDERING;
                 }
             },
             'ORDERING': {
@@ -27,13 +22,7 @@ var factory = {
             taxiService.sendOrder();
         };
 
-        machine.onenterDEBOUNCE = function (event, oldState, newState) {
-            setTimeout(function() {
-                machine.debounceTimeout();
-            }, config.button.debouceInterval);
-        };
-
-        button.on('down', function(){
+        button.on('down', function(e){
             machine.buttonDown();
         });
         button.on('up', function(e){
@@ -46,7 +35,7 @@ var factory = {
         taxiService.on('taxiConfirmed', function(e){
             machine.taxiConfirmed(e.taxiNumber);
         });
-        taxiService.on('allBusy', function(){
+        taxiService.on('allBusy', function(e){
             machine.allBusy();
         });
 

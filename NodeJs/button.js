@@ -1,31 +1,42 @@
 var util = require('util');
 var events = require('events');
 var Gpio = require('onoff').Gpio;
-var config = require('./config');
 
-function button() {
+function button(options) {
 	var that = this;
-	var gpioPin = new Gpio(config.button.pin, 'in', 'both');
-	var pressedTime = process.hrtime();
-	var isPressed = false;
+	var gpioPin = new Gpio(options.pin, 'in', 'both');
+	var lastWatchTime = process.hrtime();
+	var lastValue = 0;
+	var timeoutObject = null;
 
 	gpioPin.watch(function(err, value){
         if (err) throw err;
-        
-        if(value && isPressed)
-        {
-            var duration = process.hrtime(pressedTime);
-            var ms = hrtimeToMs(duration);
-            isPressed = false;
-	 		that.emit('up', {durationMs: ms});
-        }
-        else if(!value && isPressed === false)
-        {
-        	pressedTime = process.hrtime();
-        	isPressed = true;
-	 		that.emit('down');
-        }
+        value = value ? 0 : 1;
+
+    	if(lastValue != value && timeoutObject == null)
+    	{
+    		timeoutObject = setTimeout(function() {
+				lastValue = !lastValue;
+
+            	var duration = process.hrtime(lastWatchTime);
+             	var ms = hrtimeToMs(duration);
+         		lastWatchTime = process.hrtime();
+
+	 			that.emit(lastValue ? 'down' : 'up', {durationMs: ms});
+
+ 				timeoutObject = null;
+    		}, options.debounceTimeout);
+    	}
+    	else if (lastValue == value && timeoutObject != null)
+    	{
+			clearTimeout(timeoutObject);
+			timeoutObject = null;
+    	}
     });
+
+    this.unexport = function(){
+		gpioPin.unexport();
+    };
 
 	events.EventEmitter.call(this)
 }

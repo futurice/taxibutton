@@ -1,12 +1,11 @@
 var util = require('util');
 var events = require('events');
-var config = require('./config');
 
-function taxiService(smsGate) {
+function taxiService(smsGate, options) {
 	var that = this;
 
 	this.sendOrder = function() {
-	  	smsGate.send(config.taxiService.phoneNumber, config.taxiService.orderMessage);
+	  	smsGate.send(options.phoneNumber, options.orderMessage);
 	};
 
 	smsGate.on('received', function(e){
