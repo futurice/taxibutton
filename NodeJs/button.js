@@ -1,9 +1,11 @@
 var util = require('util');
 var events = require('events');
+var Gpio = require('onoff').Gpio;
 var config = require('./config');
 
-function button(gpioPin) {
+function button() {
 	var that = this;
+	var gpioPin = new Gpio(config.button.pin, 'in', 'both');
 	var pressedTime = process.hrtime();
 	var isPressed = false;
 
@@ -15,13 +17,13 @@ function button(gpioPin) {
             var duration = process.hrtime(pressedTime);
             var ms = hrtimeToMs(duration);
             isPressed = false;
-	 		that.emit('released', {durationMs: ms});
+	 		that.emit('up', {durationMs: ms});
         }
         else if(!value && isPressed === false)
         {
         	pressedTime = process.hrtime();
         	isPressed = true;
-	 		that.emit('pressed');
+	 		that.emit('down');
         }
     });
 

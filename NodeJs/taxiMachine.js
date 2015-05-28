@@ -6,7 +6,7 @@ var factory = {
     create: function(button, taxiService){
         var machine = Stately.machine({
             'IDLE': {
-                buttonPressed: 'PRESSED'
+                buttonDown: 'PRESSED'
             },
             'DEBOUNCE' : {
                 debounceTimeout: function(){
@@ -14,12 +14,12 @@ var factory = {
                 }
             },
             'PRESSED': {
-                buttonReleased: function (durationMs) {
+                buttonUp: function (durationMs) {
                     return durationMs < config.button.minPressIntervalMs ? this.DEBOUNCE : this.ORDERING;
                 }
             },
             'ORDERING': {
-                buttonPressed: 'PRESSED',
+                buttonDown: 'PRESSED',
             }
         });
 
@@ -33,11 +33,11 @@ var factory = {
             }, config.button.debouceInterval);
         };
 
-        button.on('pressed', function(){
-            machine.buttonPressed();
+        button.on('down', function(){
+            machine.buttonDown();
         });
-        button.on('released', function(e){
-            machine.buttonReleased(e.durationMs);
+        button.on('up', function(e){
+            machine.buttonUp(e.durationMs);
         });
 
         taxiService.on('orderConfirmed', function(e){
