@@ -11,7 +11,7 @@ $(function(){
     
     function lpad(obj, padding, minCount) {
         var str = '' + obj;
-        return (str.length < minCount) ? (repeat(padding, minCount-str.length) + str) : str;
+        return str.length < minCount ? (repeat(padding, minCount-str.length) + str) : str;
     }
     
     function toTimeElem(number) {
@@ -19,25 +19,16 @@ $(function(){
     }
     
     function formatTime(hours, minutes, seconds) {
-        var str = toTimeElem(hours);
-        if (minutes != null) {
-            str += ':' + toTimeElem(minutes);
-        }
-        if (seconds != null) {
-            str += ':' + toTimeElem(seconds);
-        }
-        return str;
+        return toTimeElem(hours)
+            + (minutes != null ? ':' + toTimeElem(minutes) : '')
+            + (seconds != null ? ':' + toTimeElem(seconds) : '');
     }
 
-    function formatHourMinTime(date) {
-        return formatTime(date.getHours(), date.getMinutes());
-    }
-    
     function updateTime() {
         var now = new Date();
         var $datetime = $('#header .datetime');
         $datetime.find('.date').text(('' + now).substring(0, 10));
-        $datetime.find('.time').text(formatHourMinTime(now));
+        $datetime.find('.time').text(formatTime(now.getHours(), now.getMinutes()));
     }
 
     updateTime();
