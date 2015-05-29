@@ -1,7 +1,4 @@
-/*globals jQuery */
-
 (function($) {
-    var CLOCK_UPDATE_TIMEOUT_MILLIS = 100;
     var REITTIOPAS_REFRESH_TIMEOUT_MILLIS = 1000*60*1;
     var WEATHER_REFRESH_TIMEOUT_MILLIS = 1000*60*5;
     
@@ -23,56 +20,6 @@
     var TAXI_BUTTON = true;
     var LAST_UPDATE = Math.round(new Date().getTime()/1000); //Last TaxiUpdate, in seconds since epoch
     
-    var now = new Date();
-    
-    /*
-     * Time formatting, displaying and friends
-     */
-    
-    function repeat(str, count) {
-        var outStr = '';
-        for (var i=0; i<count; ++i) {
-            outStr += str;
-        }
-        return outStr;
-    }
-    
-    function lpad(obj, padding, minCount) {
-        var str = '' + obj;
-        return (str.length < minCount) ? (repeat(padding, minCount-str.length) + str) : str;
-    }
-    
-    function toTimeElem(number) {
-        return lpad(number, '0', 2);
-    }
-    
-    function formatTime(hours, minutes, seconds) {
-        var str = toTimeElem(hours);
-        // Using '!=' to compare with null is intentional. The following comparisons are functionally equivalent:
-        // 
-        // minutes != null
-        // (function(undefined) { return minutes === undefined || minutes === null; }())
-        if (minutes != null) {
-            str += ':' + toTimeElem(minutes);
-        }
-        if (seconds != null) {
-            str += ':' + toTimeElem(seconds);
-        }
-        return str;
-    }
-
-    function formatHourMinTime(date) {
-        return formatTime(date.getHours(), date.getMinutes());
-    }
-    
-    function updateTime() {
-        now = new Date();
-        var $datetime = $('#header .datetime');
-        $datetime.find('.date').text(('' + now).substring(0, 10));
-        $datetime.find('.time').text(formatHourMinTime(now));
-        setTimeout(updateTime, CLOCK_UPDATE_TIMEOUT_MILLIS);
-    }
-    
     /*
      * Bus schedules
      */
@@ -92,7 +39,7 @@
         for (var i=0; i<arrivalData.length && total<ARRIVAL_ITEMS; i++) {
             var item = arrivalData[i];
             var stopTime = formatHourMinTime(item.time);
-            var diffTime = Math.round((item.time - now) / (1000*60));
+            var diffTime = Math.round((item.time - new Date()) / (1000*60));
             if (diffTime > 0) {
                 $(tableId).append(
                     '<tr><td class="line">' + item.busLineName + '</td>' +
@@ -140,6 +87,7 @@
                     hour = hour - 24;
                 }
                 
+                var now = new Date();
                 var atStop = new Date(now.getFullYear(), now.getMonth(), now.getDate()+isTomorrow, hour, minute, 0);
                 var diffMinutes = (atStop.getTime() - now.getTime()) / (1000*60);
                 
@@ -247,7 +195,6 @@
      * Other
      */
     $(document).ready(function() {
-		updateTime();
         refreshReittiopasData();
         refreshWeatherForecasts();
 
