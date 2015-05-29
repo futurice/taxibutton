@@ -2,13 +2,65 @@
 
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>TaxiButton</title>
+    <meta charset="utf-8" />
+    <title>Home - TaxiButton - Futurice.com</title>
+    <link href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic" rel="stylesheet" />
+    <link href="http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold" rel="stylesheet" />
+    <link href="/css/common.css" rel="stylesheet" />
 </head>
 <body>
-    <p>TaxiButton messages:</p>
-    <div class="messages"></div>
+    <div id="document">
+        <div id="header">
+            <img class="logo" src="/img/futurice-logo--green.svg" alt="Futurice" style="width: 250px; height: 100px;" />
+            <div class="datetime"><span class="date">DOW nth Month</span>&nbsp;<span class="time">00:00</span></div>
+            <div class="weather">
+                <table>
+                    <tr class="helsinki">
+                        <td class="city">Helsinki</td>
+                        <td class="conditions"><img src="" alt=""/></td>
+                        <td class="temp"><span class="value">?</span> &deg;C</td>
+                    </tr>
+                    <tr class="tampere">
+                        <td class="city">Tampere</td>
+                        <td class="conditions"><img src="" alt=""/></td>
+                        <td class="temp"><span class="value">?</span> &deg;C</td>
+                    </tr>
+                    <tr class="berlin">
+                        <td class="city">Berlin</td>
+                        <td class="conditions"><img src="" alt=""/></td>
+                        <td class="temp"><span class="value">?</span> &deg;C</td>
+                    </tr>
+                    <tr class="london">
+                        <td class="city">London</td>
+                        <td class="conditions"><img src="" alt=""/></td>
+                        <td class="temp"><span class="value">?</span> &deg;C</td>
+                    </tr>
+                </table>
+                <div class="notation">Powered by WeatherBug</div>
+            </div>
+        </div>
+        <div id="content">
+            <div class="schedule">
+                <h1>Buses</h1>
+                <h2>Short walk <span>(the Pianissimo stop, 300 m)</span></h2>
+                <table class="shortwalk" class="arrivalDataTable">
+                    <tbody>
+                    </tbody>
+                </table>
+                <h2>Long walk <span>(the S-Market stop, 900 m)</span></h2>
+                <table class="longwalk" class="arrivalDataTable">
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="taxi">
+            </div>
+        </div>
+    </div>
+
     <script src="/js/jquery-2.1.4.min.js" type="text/javascript"></script>
+    <script src="/js/main.js"></script>
     <script type="text/javascript">
         var socket = new WebSocket('ws://' + location.hostname + ':8081');
 

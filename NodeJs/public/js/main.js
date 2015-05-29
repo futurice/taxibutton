@@ -2,7 +2,6 @@
 
 (function($) {
     var CLOCK_UPDATE_TIMEOUT_MILLIS = 100;
-    var PAGE_RELOAD_INTERVAL_MILLIS = 1000*60*30;
     var REITTIOPAS_REFRESH_TIMEOUT_MILLIS = 1000*60*1;
     var WEATHER_REFRESH_TIMEOUT_MILLIS = 1000*60*5;
     
@@ -68,8 +67,9 @@
     
     function updateTime() {
         now = new Date();
-        $('#date').text(('' + now).substring(0, 10));
-        $('#time').text(formatHourMinTime(now));
+        var $datetime = $('#header .datetime');
+        $datetime.find('.date').text(('' + now).substring(0, 10));
+        $datetime.find('.time').text(formatHourMinTime(now));
         setTimeout(updateTime, CLOCK_UPDATE_TIMEOUT_MILLIS);
     }
     
