@@ -63,19 +63,21 @@ UNIQUE ELEMENTS and their contents
 .schedule table .diffTime {width: 40%; text-align: right;}
 .schedule table .stopTime {width: 20%; text-align: right; color: #878681;}
 
-div#taxi{ position: relative; margin: 0 -20px; padding: 40px; text-align: center; line-height: 1.25; color: #fff; background-color: #4C9018; min-height: 100px;
+.taxi {
+	position: relative; margin: 0 -20px; padding: 40px; font-size:16px; line-height: 1.25; color: #fff; background-color: #4C9018; min-height: 100px;
 	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
 	-webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.25); -moz-box-shadow: 0 0 20px rgba(0, 0, 0, 0.25); box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
 	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.25)));
-  background-image: -moz-linear-gradient(100% 100% 90deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0)); }
-div#taxi h2{ position: absolute; top: -0.9em; left: 0px; width: 100%; font-size: 72px; line-height: 1; text-align: center; text-transform: uppercase; letter-spacing: 0.25em; color: #4C9018; }
+    background-image: -moz-linear-gradient(100% 100% 90deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0));
+}
 
-div#taxi .taxi_wrap{ width: 420px; margin: auto; border-radius: 10px; -webkit-border-radius: 10px; -moz-border-radius: 10px; margin-bottom: 10px; font-size: 32px; padding: 15px; }
-div#taxi .orders{ display: none; color: #FFFFFF; }
-div#taxi .processing{ background-color: #000066 !important; }
-div#taxi .response{ background-color: #000066 !important; }
-div#taxi .fail{ background-color: #FF0000 !important; color: #FFFFFF; }
-div#taxi .success{ background-color: #4C9018 !important; color: #FFFFFF; }
+.taxi h2 {position: absolute; top: -0.9em; left: 0px; width: 100%; font-size: 72px; line-height: 1; text-align: center; text-transform: uppercase; letter-spacing: 0.25em; color: #4C9018;}
+.taxi .taxi_wrap {width: 420px; margin: auto; border-radius: 10px; -webkit-border-radius: 10px; -moz-border-radius: 10px; margin-bottom: 10px; font-size: 32px; padding: 15px;}
+.taxi .orders {display: none; color: #FFFFFF;}
+.taxi .processing {background-color: #000066 !important;}
+.taxi .response {background-color: #000066 !important;}
+.taxi .fail {background-color: #FF0000 !important; color: #FFFFFF;}
+.taxi .success {background-color: #4C9018 !important; color: #FFFFFF;}
 
 /*
 ================================================================================
