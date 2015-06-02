@@ -1,7 +1,7 @@
 $(function(){
-    var REITTIOPAS_REFRESH_TIMEOUT_MILLIS = 1000*30*1;
+    var REITTIOPAS_REFRESH_TIMEOUT_MILLIS = 1000*60*1;
     
-    var REITTIOPAS_BASE_URL = 'http://api.reittiopas.fi/public-ytv/fi/api/?user=futurice&pass=9e0h2s3h&stop=';
+    var REITTIOPAS_BASE_URL = 'http://api.reittiopas.fi/hsl/prod/?request=stop&user=futurice&pass=9e0h2s3h&format=json&code=';
     var SHORT_WALK_STOP_URL = REITTIOPAS_BASE_URL + '1045';
     var LONG_WALK_STOP_URL = REITTIOPAS_BASE_URL + '1055';
 
@@ -27,7 +27,7 @@ $(function(){
     
     function populateTable($table, arrivalData) {
     	$table.empty();
-    	
+
         var total = 0;
         for (var i=0; i<arrivalData.length && total<ARRIVAL_ITEMS; i++) {
             var item = arrivalData[i];

@@ -52,7 +52,6 @@ UNIQUE ELEMENTS and their contents
 .weather table td.conditions {padding: 0 10px 0 20px;}
 .weather table td.conditions img {width: 48px; height: 48px;}
 .weather table td.temp {text-align: right;}
-.weather .notation {float: left; width: 168px; height: 168px; font-size: 12px; line-height: 14px; text-align: center; background-color: transparent; -webkit-transform: rotate(-90deg); -moz-transform: rotate(-90deg); transform: rotate(-90deg);}
 
 .schedule {margin-bottom: 132px;}
 .schedule h1 {color: #4C9018; margin-bottom: 30px;}

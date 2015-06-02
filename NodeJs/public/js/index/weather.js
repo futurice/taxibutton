@@ -1,53 +1,57 @@
-$(function(){
-    var WEATHER_REFRESH_TIMEOUT_MILLIS = 5*60*1000;
-    var WEATHERBUG_API_CODE = 'A4673533785';
-    var WEATHERBUG_BASE_URL = 'http://' + WEATHERBUG_API_CODE + '.api.wxbug.net/getLiveWeatherRSS.aspx';
+(function(futu, $, undefined) {
+    futu.weather = (function () {
+        var instance;
+        var config;
+        var refreshTimeoutObject;
+        
+        var formatTemperature = function(temperature) {
+            var round = temperature.toFixed(1);
+            return round > 0 ? '+' + round : round.toString();
+        };
 
-    // Search city codes by 'http://a4673533785.api.wxbug.net/getLocationsXML.aspx?ACode=A4673533785&SearchString=<city name>'
-    var CITY_CODES = {
-        helsinki: 62073,
-        tampere: 62152,
-        berlin: 58439,
-        london: 60876
-    };
-    
-    function refreshWeatherForecastForCity(city) {
-        $.get(WEATHERBUG_BASE_URL, {
-            ACode: WEATHERBUG_API_CODE,
-            unittype: 1,
-            citycode: CITY_CODES[city]
-        }, function(data) {
-            var desc = $(data).find('item:first').find('description:first');
-            // Turn the CDATA content into jQuery DOM object, wrapping it inside a div first to make find() work
-            var descDOM = $('<div>' + desc.text() + '</div>');
-            var img = descDOM.find('img:first');
-            var imgUrl = img.length && img[0].src;
-            // Extract temperatures
-            var temp;
-            var childNodes = descDOM[0].childNodes; // argh, need to use DOM here :(
-            for (var i=0, length=childNodes.length, element; i<length; i++) {
-                element = childNodes[i];
-                if (element.data && ('' + element.data).indexOf('°C') >= 0) {
-                    temp = parseInt(element.data, 10);
-                    break;
+        function init() {
+            return {
+                start: function (options) {
+                    config = options;
+
+                    clearTimeout(refreshTimeoutObject);
+                    refresh();
+                    refreshTimeoutObject = setInterval(refresh, config.refreshInterval);
+                },
+            };
+        };
+
+        function refresh() {
+            $.when.apply($, _.map(config.queries, function(query){
+                return $.get('http://api.openweathermap.org/data/2.5/weather', {
+                    APPID: config.apikey,
+                    q: query,
+                    units: 'metric'
+                });
+            })).done(function(){
+                var results = _.map(arguments, function(x){return x[0]});
+                var templatesData = _.map(results, function(x) {
+                    return {
+                        city: x.name,
+                        temperature: formatTemperature(x.main.temp),
+                        icon: 'http://openweathermap.org/img/w/' + x.weather[0].icon + '.png'
+                    };
+                });
+                
+                var itemTemplate = futu.templates.find('#weather-item-template');
+                var itemsHtml = futu.templates.renderMany(itemTemplate, templatesData);
+                $('.weather table').html(itemsHtml);
+            });
+        };
+         
+        return {
+            getInstance: function () {
+                if (!instance)
+                {
+                    instance = init();
                 }
+                return instance;
             }
-    
-            // Update image and temp in UI
-            var forecast = $('.weather .' + city);
-            forecast.find('.conditions img').attr('src', imgUrl);
-            forecast.find('.temp .value').text(temp);
-        });
-    }
-    
-    function refreshWeatherForecasts() {
-        for (var city in CITY_CODES) {
-            if (CITY_CODES.hasOwnProperty(city)) {
-                refreshWeatherForecastForCity(city);
-            }
-        }
-    }
-
-    refreshWeatherForecasts();
-    setInterval(refreshWeatherForecasts, WEATHER_REFRESH_TIMEOUT_MILLIS);
-});
+        };
+    })();
+}(window.futu = window.futu || {}, jQuery));
