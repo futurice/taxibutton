@@ -1,18 +1,38 @@
 $(function() {
-    var socket = new WebSocket('ws://' + location.hostname + ':8081');
-    
-    socket.onmessage = function(e) {
-        var data = JSON.parse(e.data);
-        //console.log(data);
+	var socketUrl = 'ws://' + location.hostname + ':8081';
+    var socket;
 
-        if(data.type == 'config')
-        {
-            futu.weather.getInstance().start(data.config.weather);
-            futu.schedule.getInstance().start(data.config.schedule);
-        }
-        else if(data.type == 'unrecognizedSms')
-        {
-        	console.log('Unrecognized SMS message from ' + data.phoneNumber + ' "' + data.message + '"');
-        }
+    var tryConnect = function() {
+		socket = new WebSocket(socketUrl);
+    
+	    socket.onopen = function() {
+			console.log('WebSocket connection to ' + socketUrl + ' is opened');
+		};
+
+		socket.onclose = function(event) {
+		    tryConnect();
+			
+			console.log('WebSocket connection to ' + socketUrl + ' is closed. Code: ' + event.code + '. Reason: ' + event.reason);
+		};
+
+		socket.onerror = function(error) {
+			console.log('WebSocket connection error: ' + error.message);
+		};
+
+	    socket.onmessage = function(e) {
+	        var data = JSON.parse(e.data);
+
+	        if(data.type == 'config')
+	        {
+	            futu.weather.getInstance().start(data.config.weather);
+	            futu.schedule.getInstance().start(data.config.schedule);
+	        }
+	        else if(data.type == 'unrecognizedSms')
+	        {
+	        	console.log('Unrecognized SMS message from ' + data.phoneNumber + ' "' + data.message + '"');
+	        }
+	    };
     };
+
+    tryConnect();
 });
