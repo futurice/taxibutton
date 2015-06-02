@@ -46,8 +46,8 @@ smsGate.on('sending-error', function(e){
 
 var taxiServiceClass = require('./taxiService');
 var taxiService = new taxiServiceClass(smsGate, config.taxiService);
-taxiService.on('unknown', function(e){
-    logger.warning('TaxiService unknown message from %s "%s"', e.phoneNumber, e.message);
+taxiService.on('unrecognized', function(e){
+    logger.warning('TaxiService unrecognized message from %s "%s"', e.phoneNumber, e.message);
 });
 
 /* -------------------------------- */

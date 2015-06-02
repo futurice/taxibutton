@@ -24,9 +24,9 @@ function webSocketNotifier(wsServer, taxiService, taxiMachine) {
         sendJson(connection, message);
     });
 
-    taxiService.on('unknown', function(e){
+    taxiService.on('unrecognized', function(e){
     	var message = {
-			type: 'unknownSms',
+			type: 'unrecognizedSms',
 			phoneNumber: e.phoneNumber,
 			message: e.message
     	};

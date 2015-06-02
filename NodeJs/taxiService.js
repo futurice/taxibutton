@@ -27,7 +27,7 @@ function taxiService(smsGate, options) {
 		}
 		else
 		{
-	 		that.emit('unknown', {phoneNumber: e.phoneNumber, message: e.message});
+	 		that.emit('unrecognized', {phoneNumber: e.phoneNumber, message: e.message});
 		}
 	});
 
