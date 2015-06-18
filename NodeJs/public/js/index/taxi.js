@@ -8,7 +8,7 @@
                 transition: function (data) {
                     var $taxi = $('.taxi');
                     $taxi.empty();
-                    $('.taxi').append($('<span>').text(JSON.stringify(data)));
+                    $taxi.append($('<span>').text(JSON.stringify(data)));
                     console.log(data);
                 }
             };

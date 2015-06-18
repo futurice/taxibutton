@@ -33,6 +33,8 @@ $(function() {
 			}
 			else if(data.type == 'unrecognizedSms')
 			{
+				$('.taxi').empty();
+				$('.taxi').append($('<span>').text('Unrecognized SMS message from ' + data.phoneNumber + ' "' + data.message + '"'));
 				console.log('Unrecognized SMS message from ' + data.phoneNumber + ' "' + data.message + '"');
 			}
 		};
