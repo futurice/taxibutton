@@ -13,11 +13,11 @@
     <div id="document">
         <div id="calendar">
             <img class="logo" src="/img/futurice-logo--green.svg" alt="Futurice"/>
-            <div class="day-numbers"></div>
+            <div class="weekdays"></div>
             <div class="current-time"></div>
             <div class="this-place">
-                <div class="name"></div>
                 <div class="weather"></div>
+                <div class="name"></div>
             </div>
             <div class="ticker"></div>
         </div>
@@ -40,20 +40,27 @@
     <script src="/js/index/main.js"></script>
 
     <script id="calendar-day-number-template" type="html/template">
-        <div class="day-number {{dayOffClass}}">
-            <span class="number">{{number}}</span>
+        <div class="item {{weekendClass}}">
+            <span class="dayOfMonth">{{dayOfMonth}}</span>
             <br/>
-            <span class="name">{{name}}</span>
+            <span class="dayOfWeek">{{dayOfWeek}}</span>
         </div>
     </script>
 
     <script id="calendar-this-place-weather-template" type="html/template">
-        <div class="temperature">{{temperature}}&nbsp;&deg;</div>
+        <span class="temperature">{{temperature}}&nbsp;&deg;</span>
         <img class="icon" src="{{icon}}" alt=""/>
     </script>
 
+    <script id="calendar-ticker-template" type="html/template">
+        <div class="wrapper">
+            <div class="line">{{lineHtml}}</div>
+            <div class="line">{{lineHtml}}</div>
+        </div>
+    </script>
+
     <script id="calendar-ticker-item-template" type="html/template">
-        <span><span class="name">{{name}}</span>&nbsp;<span class="time">{{time}}</span>&nbsp;<span class="temperature">{{temperature}}</span>&deg;</span>
+        <span class="place-{{index}}"><span class="name">{{name}}</span>&nbsp;<span class="time">{{time}}</span>&nbsp;<span class="temperature">{{temperature}}</span>&deg;</span>
     </script>
 </body>
 </html>
