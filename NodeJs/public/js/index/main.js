@@ -24,7 +24,7 @@ $(function() {
 
 			if(data.type == 'config')
 			{
-				futu.weather.getInstance().start(data.config.weather);
+				futu.calendar.getInstance().start(data.config.calendar);
 				futu.schedule.getInstance().start(data.config.schedule);
 			}
 			else if(data.type == 'transition')

@@ -1,36 +1,14 @@
 /*
 ================================================================================
-CSS RESET (http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/)
-================================================================================
-*/
-
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, font, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td{ margin: 0; padding: 0; border: 0; outline: 0; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit; vertical-align: baseline; }
-:focus{ outline: 0; }
-ol, ul{ list-style: none; }
-table{ border-collapse: separate; border-spacing: 0; }
-caption, th, td { text-align: left; font-weight: normal; }
-blockquote:before, blockquote:after,
-q:before, q:after{ content: ""; }
-blockquote, q{ quotes: "" ""; }
-
-/*
-================================================================================
 BASIC STYLES for tags
 ================================================================================
 */
 
-body {max-width: 1080px; max-height: 1920px; font-family: 'Droid Sans', Verdana, Arial, Helvetica, sans-serif; font-size: 60px; line-height: 1.5; color: #000; background-color: #fff; overflow: hidden;}
-h1, h2, h3, h4, h5, h6 {font-family: 'Nobile', Verdana, Arial, Helvetica, sans-serif; font-weight: bold; line-height: 1;}
+body {max-width:1080px; max-height:1920px; font-family: 'Droid Sans', Verdana, Arial, Helvetica, sans-serif; color:black; background-color:white;}
+/*h1, h2, h3, h4, h5, h6 {font-family: 'Nobile', Verdana, Arial, Helvetica, sans-serif; font-weight: bold; line-height: 1;}
 h1 {font-size: 72px; text-transform: uppercase;}
 h2 {font-size: 60px;}
-strong {font-weight: bold;}
+strong {font-weight: bold;}*/
 
 /*
 ================================================================================
@@ -38,13 +16,22 @@ UNIQUE ELEMENTS and their contents
 ================================================================================
 */
 
-#document {position: relative; width: 960px; height: 1800px; margin: 0 auto; padding: 60px; overflow: hidden; }
+#document {position:relative; width:100%; height:100%;}
 
-#header {width: 100%; height: 215px; margin-bottom: 60px; font-size: 30px; color: #878681; overflow: hidden; }
-#header .logo {position: absolute; top: 0px; right: 30px; z-index: 1000; }
-#header .datetime {float: left; margin-right: 40px; text-align: center; line-height: 1.2;}
-#header .datetime .date {display: block;}
-#header .datetime .time {display: block; font-size: 128px; font-weight: bold;}
+#calendar {height:880px; padding-left:30px; color:white; background-color:rgb(55, 53, 53);}
+#calendar .logo {height:20px;}
+#calendar .this-place .name {color:#ffde00;}
+#calendar .ticker .name {color:#ffde00;}
+#calendar .ticker .time {color:#ffde00;}
+
+#schedule {height:680px; background-color:white;}
+
+#taxi {height:360px; background-color:#ffde00;}
+/*#calendar {width: 100%; height: 215px; margin-bottom: 60px; font-size: 30px; color: #878681; overflow: hidden; }
+#calendar .logo {position: absolute; top: 0px; right: 30px; z-index: 1000; }
+#calendar .datetime {float: left; margin-right: 40px; text-align: center; line-height: 1.2;}
+#calendar .datetime .date {display: block;}
+#calendar .datetime .time {display: block; font-size: 128px; font-weight: bold;}
 .weather {float: left; width: auto; font-size: 48px; line-height: 48px;}
 .weather table {float: left; width: auto; margin-right: 10px;}
 .weather table td {vertical-align: middle;}
@@ -53,17 +40,17 @@ UNIQUE ELEMENTS and their contents
 .weather table td.conditions img {width: 48px; height: 48px;}
 .weather table td.temp {text-align: right;}
 
-.schedule {margin-bottom: 132px;}
-.schedule h1 {color: #4C9018; margin-bottom: 30px;}
-.schedule h2 {margin-top: 30px; margin-bottom: 30px; color: #878681;}
-.schedule h2 span {font-size: 50%;}
-.schedule table {width: 100%;}
-.schedule table .line {width: 20%;}
-.schedule table .destination {width: 20%; color: #878681;}
-.schedule table .diffTime {width: 40%; text-align: right;}
-.schedule table .stopTime {width: 20%; text-align: right; color: #878681;}
+#schedule {margin-bottom: 132px;}
+#schedule h1 {color: #4C9018; margin-bottom: 30px;}
+#schedule h2 {margin-top: 30px; margin-bottom: 30px; color: #878681;}
+#schedule h2 span {font-size: 50%;}
+#schedule table {width: 100%;}
+#schedule table .line {width: 20%;}
+#schedule table .destination {width: 20%; color: #878681;}
+#schedule table .diffTime {width: 40%; text-align: right;}
+#schedule table .stopTime {width: 20%; text-align: right; color: #878681;}
 
-.taxi {
+#taxi {
 	position: relative; margin: 0 -20px; padding: 40px; font-size:16px; line-height: 1.25; color: #fff; background-color: #4C9018; min-height: 100px;
 	-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;
 	-webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.25); -moz-box-shadow: 0 0 20px rgba(0, 0, 0, 0.25); box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
@@ -71,25 +58,11 @@ UNIQUE ELEMENTS and their contents
     background-image: -moz-linear-gradient(100% 100% 90deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0));
 }
 
-.taxi h2 {position: absolute; top: -0.9em; left: 0px; width: 100%; font-size: 72px; line-height: 1; text-align: center; text-transform: uppercase; letter-spacing: 0.25em; color: #4C9018;}
-.taxi .taxi_wrap {width: 420px; margin: auto; border-radius: 10px; -webkit-border-radius: 10px; -moz-border-radius: 10px; margin-bottom: 10px; font-size: 32px; padding: 15px;}
-.taxi .orders {display: none; color: #FFFFFF;}
-.taxi .processing {background-color: #000066 !important;}
-.taxi .response {background-color: #000066 !important;}
-.taxi .fail {background-color: #FF0000 !important; color: #FFFFFF;}
-.taxi .success {background-color: #4C9018 !important; color: #FFFFFF;}
+#taxi h2 {position: absolute; top: -0.9em; left: 0px; width: 100%; font-size: 72px; line-height: 1; text-align: center; text-transform: uppercase; letter-spacing: 0.25em; color: #4C9018;}
+#taxi .taxi_wrap {width: 420px; margin: auto; border-radius: 10px; -webkit-border-radius: 10px; -moz-border-radius: 10px; margin-bottom: 10px; font-size: 32px; padding: 15px;}
+#taxi .orders {display: none; color: #FFFFFF;}
+#taxi .processing {background-color: #000066 !important;}
+#taxi .response {background-color: #000066 !important;}
+#taxi .fail {background-color: #FF0000 !important; color: #FFFFFF;}
+#taxi .success {background-color: #4C9018 !important; color: #FFFFFF;}*/
 
-/*
-================================================================================
-OTHER CLASSES
-================================================================================
-*/
-
-/* Clearfixes */
-
-.clear{ clear: both; display: block; overflow: hidden; visibility: hidden; width: 0; height: 0; }
-.clearfix:after{ clear: both; content: " "; display: block; font-size: 0; height: 0; visibility: hidden; }
-.clearfix{ display: inline-block; }
-html[xmlns] .clearfix{ display: block; }
-* html .clearfix{ zoom: 1; height: 1%; } /* IE6 */
-*:first-child+html .clearfix{ zoom: 1; height: 1%; } /* IE7 */
