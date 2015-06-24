@@ -15,18 +15,18 @@ body {max-width:1080px; max-height:1920px; font-family: 'Droid Sans', Verdana, A
 #calendar .this-place .weather {float:right; font-size:50px;}
 #calendar .ticker {white-space: nowrap; margin-top:20px; font-size:28px;}
 #calendar .ticker .wrapper {display:table; position:relative;}
-#calendar .ticker .line {display:table-cell; padding-right:100px;}
-@-webkit-keyframes tickerWrapperTransform{
-    from {-webkit-transform:translate(0%,0);}
-    to {-webkit-transform:translate(-50%,0);}
+#calendar .ticker .line {display:table-cell; position:relative; padding-right:100px;}
+@-webkit-keyframes tickerLineKeyframes{
+    from {left:0%;}
+    to {left:-50%;}
 }
-@keyframes tickerWrapperTransform {
-	from {transform:translate(0%,0);}
-    to {transform:translate(-50%,0);}
+@keyframes tickerLineKeyframes {
+    from {left:0%;}
+    to {left:-50%;}
 }
-#calendar .ticker .wrapper {
--webkit-animation:tickerWrapperTransform 12s linear 0s infinite normal;
-        animation:tickerWrapperTransform 12s linear 0s infinite normal;
+#calendar .ticker .line {
+-webkit-animation:tickerLineKeyframes 12s linear 0s infinite normal;
+        animation:tickerLineKeyframes 12s linear 0s infinite normal;
 }
 #calendar .ticker .name {color:#ffde00;}
 #calendar .ticker .time {color:#ffde00;}
