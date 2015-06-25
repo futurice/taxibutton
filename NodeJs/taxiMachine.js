@@ -6,17 +6,24 @@ var factory = {
         var machine = Stately.machine({
             'IDLE': {
                 buttonDown: function () {
-                    clearStateTimeout(this);
+                    setStateTimeout(this, machine.pressedTimeout, options.pressedTimeout);
                     return this.PRESSED;
                 }
             },
+            'QUICKIE': {
+                buttonDown: function () {
+                    return this.IDLE.buttonDown.call(this);
+                },
+                quikieTimeout: function () {
+                    return this.IDLE;
+                }
+            },
             'PRESSED': {
-                buttonUp: function (durationMs) {
-                    if(durationMs < options.minPressDuration)
-                    {
-                        return this.IDLE;
-                    }
-                    
+                buttonUp: function () {
+                    setStateTimeout(this, machine.quikieTimeout, options.quickieTimeout);
+                    return this.QUICKIE;
+                },
+                pressedTimeout: function () {
                     taxiService.sendOrder();
                     setStateTimeout(this, machine.orderingTaxiTimeout, options.orderingTaxiTimeout);
                     return this.ORDERING_TAXI;
@@ -27,11 +34,6 @@ var factory = {
                     this.orderNumber = orderNumber;
                     setStateTimeout(this, machine.awaitingTaxiTimeout, options.awaitingTaxiTimeout);
                     return this.AWAITING_TAXI;
-                },
-                taxiConfirmed: function (taxiNumber) {
-                    this.taxiNumber = taxiNumber;
-                    setStateTimeout(this, machine.taxiConfirmedTimeout, options.taxiConfirmedTimeout);
-                    return this.TAXI_CONFIRMED;
                 },
                 allBusy: function () {
                     setStateTimeout(this, machine.allBusyTimeout, options.allBusyTimeout);
@@ -44,7 +46,9 @@ var factory = {
             },
             'AWAITING_TAXI': {
                 taxiConfirmed: function (taxiNumber) {
-                    return this.ORDERING_TAXI.taxiConfirmed.call(this, taxiNumber);
+                    this.taxiNumber = taxiNumber;
+                    setStateTimeout(this, machine.taxiConfirmedTimeout, options.taxiConfirmedTimeout);
+                    return this.TAXI_CONFIRMED;
                 },
                 allBusy: function () {
                     return this.ORDERING_TAXI.allBusy.call(this);
@@ -79,10 +83,6 @@ var factory = {
             },
         });
 
-        var clearStateTimeout = function (stateStore) {
-            clearTimeout(stateStore.stateTimeoutObject);
-        };
-
         var setStateTimeout = function(stateStore, action, timeout){
             clearTimeout(stateStore.stateTimeoutObject);
             stateStore.stateTimeoutObject = setTimeout(function(){
@@ -94,7 +94,7 @@ var factory = {
             machine.buttonDown();
         });
         button.on('up', function(e){
-            machine.buttonUp(e.durationMs);
+            machine.buttonUp();
         });
 
         taxiService.on('orderConfirmed', function(e){

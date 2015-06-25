@@ -26,6 +26,7 @@ $(function() {
 			{
 				futu.calendar.getInstance().start(data.config.calendar);
 				futu.schedule.getInstance().start(data.config.schedule);
+				futu.taxi.getInstance().start(data.config.taxiMachine);
 			}
 			else if(data.type == 'transition')
 			{
