@@ -1,6 +1,6 @@
 @font-face {
 	font-family: SharpSans;
-	src: url("/fonts/SharpSansNo1-Medium.otf") format("opentype");
+	src: url("/fonts/SharpSansNo1-Semibold.otf") format("opentype");
 }
 
 @font-face {
@@ -9,26 +9,28 @@
 	src: url("/fonts/SharpSansNo1-Bold.otf") format("opentype");
 }
 
-body {max-width:1080px; max-height:1920px; font-family:'SharpSans'; color:black; background-color:white; overflow-x:hidden;}
 b {font-weight:bold;}
+
+body {max-width:1080px; max-height:1920px; font-family:'SharpSans'; color:black; background-color:white; overflow-x:hidden;}
 
 #document {position:relative; width:100%; height:100%;}
 
-#calendar {height:880px; padding-left:30px; color:white; background-color:rgb(55, 53, 53);}
-#calendar .logo {height:20px; margin-top:30px;}
-#calendar .weekdays {margin-top:20px; overflow:hidden; font-size:50px; font-weight:bold; text-align:center;}
-#calendar .weekdays .item {float:left; color:#131212;}
+#calendar {height:890px; padding-left:48px; color:white; background-color:rgb(55, 53, 53);}
+#calendar .logo {margin-top:60px;}
+#calendar .weekdays {margin-top:60px; overflow:hidden; line-height:80px; font-size:72px; text-align:center;}
+#calendar .weekdays .item {float:left; color:#131212; margin-left:45px;}
 #calendar .weekdays .item.weekend {color:#4e4c4c;}
-#calendar .weekdays .item:first-child {color:white;}
-#calendar .weekdays .item .dayOfWeek {font-size:32px;}
-#calendar .current-time {clear:both; margin-top:20px; font-size:120px; font-weight:bold;}
-#calendar .this-place {margin-top:20px; font-size:120px;}
-#calendar .this-place .name {color:#ffde00; font-weight:bold;}
-#calendar .this-place .weather {float:right; font-size:50px;}
-#calendar .ticker {white-space: nowrap; margin-top:20px; font-size:28px;}
+#calendar .weekdays .item:first-child {color:white; font-size:80px; margin-left:0;}
+#calendar .weekdays .item .dayOfWeek {font-size:50px; font-weight:bold;}
+#calendar .current-time {clear:both; margin-top:88px; font-size:150px; font-weight:bold;}
+#calendar .this-place {display:table; width:100%; margin-top:36px; font-size:150px;}
+#calendar .this-place .name {display:table-cell; color:#ffde00;}
+#calendar .this-place .weather {display:table-cell; text-align:right; padding-right:34px; font-size:78px;}
+#calendar .this-place .weather .icon {height:90px;}
+#calendar .ticker {white-space: nowrap; margin-top:60px; font-size:30px;}
 #calendar .ticker .wrapper {display:table; position:relative;}
 #calendar .ticker .line {display:table-cell; position:relative; padding-right:100px;}
-@-webkit-keyframes tickerLineKeyframes{
+@-webkit-keyframes tickerLineKeyframes {
     from {left:0%;}
     to {left:-50%;}
 }
@@ -43,7 +45,7 @@ b {font-weight:bold;}
 #calendar .ticker .name {color:#ffde00;}
 #calendar .ticker .time {color:#ffde00;}
 
-#schedule {height:680px; background-color:white; overflow:hidden;}
+#schedule {height:674px; background-color:white; overflow:hidden;}
 #schedule .left {float:left; width:50%; position:relative;}
 #schedule .right {float:right; width:50%; position:relative;}
 #schedule table {table-layout:fixed; width:100%;}
@@ -56,7 +58,7 @@ b {font-weight:bold;}
 #schedule .buses .img-stub,
 #schedule .trams .img-stub {display:inline-block; width:50px; height:50px; border:2px solid black; vertical-align:middle;}
 
-#taxi {height:360px; position:relative; background-color:#ffde00;}
+#taxi {height:356px; position:relative; background-color:#ffde00;}
 #taxi .frames {width:100%; height:100%; display:table;}
 #taxi .frame {display:none; position:relative; vertical-align:middle; text-align:center; font-size:28px;}
 #taxi .frame .img-stub {display:inline-block; width:100px; height:100px; border:2px solid black;}

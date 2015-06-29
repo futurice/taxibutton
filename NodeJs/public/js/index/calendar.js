@@ -82,7 +82,7 @@
                 var thisPlaceResult = _.first(results);
                 var thisPlaceWeatherHtml = futu.templates.render(thisPlaceWeatherTemplate, {
                     temperature: formatTemperature(thisPlaceResult.main.temp),
-                    icon: 'http://openweathermap.org/img/w/' + thisPlaceResult.weather[0].icon + '.png',
+                    icon: thisPlaceResult.weather[0].icon,
                 });
                 $calendar.find('.this-place .weather').html(thisPlaceWeatherHtml);
 
