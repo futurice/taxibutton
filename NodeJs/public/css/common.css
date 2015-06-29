@@ -1,5 +1,16 @@
-body {max-width:1080px; max-height:1920px; font-family: 'Droid Sans', Verdana, Arial, Helvetica, sans-serif; color:black; background-color:white; overflow-x:hidden;}
-b {font-weight:bolder;}
+@font-face {
+	font-family: SharpSans;
+	src: url("/fonts/SharpSansNo1-Medium.otf") format("opentype");
+}
+
+@font-face {
+	font-family: SharpSans;
+	font-weight: bold;
+	src: url("/fonts/SharpSansNo1-Bold.otf") format("opentype");
+}
+
+body {max-width:1080px; max-height:1920px; font-family:'SharpSans'; color:black; background-color:white; overflow-x:hidden;}
+b {font-weight:bold;}
 
 #document {position:relative; width:100%; height:100%;}
 
@@ -12,7 +23,7 @@ b {font-weight:bolder;}
 #calendar .weekdays .item .dayOfWeek {font-size:32px;}
 #calendar .current-time {clear:both; margin-top:20px; font-size:120px; font-weight:bold;}
 #calendar .this-place {margin-top:20px; font-size:120px;}
-#calendar .this-place .name {color:#ffde00;}
+#calendar .this-place .name {color:#ffde00; font-weight:bold;}
 #calendar .this-place .weather {float:right; font-size:50px;}
 #calendar .ticker {white-space: nowrap; margin-top:20px; font-size:28px;}
 #calendar .ticker .wrapper {display:table; position:relative;}
@@ -36,7 +47,7 @@ b {font-weight:bolder;}
 #schedule .left {float:left; width:50%; position:relative;}
 #schedule .right {float:right; width:50%; position:relative;}
 #schedule table {table-layout:fixed; width:100%;}
-#schedule table.header {font-weight:bolder;}
+#schedule table.header {font-weight:bold;}
 #schedule table td {overflow:hidden; padding:16px 24px;}
 #schedule table tr:nth-child(even) {background-color:#f5f5f5;}
 #schedule table tr td:nth-child(1) {width:18%;}
