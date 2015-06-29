@@ -16,12 +16,13 @@
             'PRESSED': function(t) {
                 var counter = (config.pressedTimeout / 1000).toFixed(0);
 
+                $frames.find('.frame.pressed .cap').text(counter);
                 var $counter = $frames.find('.frame.pressed .counter');
-                $counter.text(counter);
+                $counter.text('00:0' + counter);
                 
                 clearTimeout(pressedCounterTimeoutObject);
                 pressedCounterTimeoutObject = setInterval(function() {
-                    $counter.text(--counter);
+                    $counter.text('00:0' + (--counter));
                     if (counter == 0) {
                         clearTimeout(pressedCounterTimeoutObject);
                     };
@@ -40,6 +41,14 @@
                 $frame.find('.order-number').text(orderNumber);
                 $frame.find('.taxi-number').text(t.parameters.taxiNumber);
                 showFrame('taxi-confirmed');
+
+                var $previousTaxi = $frames.find('.frame.idle .previous-taxi');
+                $previousTaxi.find('.order-number').text(orderNumber);
+                $previousTaxi.find('.taxi-number').text(t.parameters.taxiNumber);
+                $previousTaxi.show();
+                setTimeout(function(){
+                    $previousTaxi.fadeOut(1500);
+                }, config.taxiConfirmedTimeout + 60 * 1000);
             },
             'ALL_BUSY': function(t) {showFrame('all-busy');},
             'ORDER_FAILED': function(t) {showFrame('order-failed');}

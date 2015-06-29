@@ -48,76 +48,72 @@
         <div id="taxi">
             <div class="frames">
                 <div class="frame idle">
-                    <div class="img-stub"></div>
+                    <img class="indicator" src="/img/taxi/idle-indicator.png" alt=""/>
                     <p>
-                        <b>&mdash; TAXI &mdash;</b>
-                        <br/>
+                        <b>&#x2015; TAXI &#x2015;</b>
                         <br/>
                         To order a taxi, <b>press and hold</b> the button.
                     </p>
+                    <div class="previous-taxi">
+                        <img class="icon" src="/img/taxi/previous-taxi.png" alt=""/>
+                        Order #<span class="order-number">000</span>. Taxi #<span class="taxi-number">000</span> is on the way.
+                    </div>
                 </div>
                 <div class="frame pressed">
                     <p>
-                        <div class="img-stub"></div>
+                        <span class="counter">00:00</span>
                         <br/>
-                        Please hold the button for <span class="counter">0</span> more seconds.
+                        <b>Hold it for <span class="cap">0</span> sec. We will count.</b>
                     </p>
                 </div>
                 <div class="frame quickie">
                     <p>
-                        <div class="img-stub"></div>
+                        <img class="icon" src="/img/taxi/quickie.png" alt=""/>
                         <br/>
                         That was too fast.
                         <br/>
                         <b/>Please press and hold again.</b>
                     </p>
                 </div>
-                <div class="frame pressed-timeout">
-                    <p>
-                        <div class="img-stub"></div>
-                        <br/>
-                        You can let the button go now.
-                    </p>
-                </div>
                 <div class="frame ordering-taxi">
                     <p>
-                        <div class="img-stub"></div>
+                        <img class="icon" src="/img/taxi/ordering-taxi.png" alt=""/>
                         <br/>
                         We are <b>processing your order</b>
                         <br/>
-                        it might take up to 8 min. (but usually it never does)
+                        <span class="info">it might take up to 8 min. (but usually it never does)</span>
                     </p>
                 </div>
                 <div class="frame awaiting-taxi">
                     <p>
-                        <div class="img-stub"></div>
+                        <img class="icon" src="/img/taxi/awaiting-taxi.png" alt=""/>
                         <br/>
                         We are <b>looking for taxi</b>
                         <br/>
-                        it might take up to 8 min. (but usually it never does)
+                        <span class="info">it might take up to 8 min. (but usually it never does)</span>
                     </p>
                 </div>
                 <div class="frame taxi-confirmed">
                     <p>
-                        <div class="img-stub"></div>
+                        <img class="icon" src="/img/taxi/taxi-confirmed.png" alt=""/>
                         <br/>
-                        Your order <b>#<span class="order-number">000</span></b>. Taxi number <b>#<span class="taxi-number">000</span></b>.
+                        Your order <b>#<span class="order-number">000</span> (taxi number <span class="taxi-number">000</span>)</b>
                         <br/>
-                        Taxi will be waiting downstairs.
+                        Taxi will be waiting downstairs
                     </p>
                 </div>
                 <div class="frame all-busy">
                     <p>
-                        <div class="img-stub"></div>
-                        <br/>
                         ALL BUSY
                     </p>
                 </div>
                 <div class="frame order-failed">
                     <p>
-                        <div class="img-stub"></div>
+                        <img class="icon" src="/img/taxi/order-failed.png" alt=""/>
                         <br/>
-                        ORDER FAILED
+                        <span class="oops">Oops!</span>
+                        <br/>
+                        Something went wrong, please try again!
                     </p>
                 </div>
             </div>
