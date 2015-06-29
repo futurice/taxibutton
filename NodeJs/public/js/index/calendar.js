@@ -53,11 +53,10 @@
 
         var timeRefresh = function() {
             var now = moment();
-            var format = 'HH:mm';
 
             var thisPlace = _.first(config.places);
             var thisPlaceNow = now.tz(thisPlace.timezone);
-            $calendar.find('.current-time').text(thisPlaceNow.format(format));
+            $calendar.find('.current-time').text(thisPlaceNow.format('HH:mm'));
             if(thisPlaceNow.date() != thisPlaceLastNow.date())
             {
                 renderDayNumbers(thisPlaceNow);
@@ -66,13 +65,13 @@
 
             var restPlaces = _.rest(config.places, 1);
             _.each(restPlaces, function(place, index) {
-                $ticker.find('span.place-' + index + ' .time').text(now.tz(place.timezone).format(format));
+                $ticker.find('span.place-' + index + ' .time').text(now.tz(place.timezone).format('HH:mm'));
             });
         };
 
         var weatherRefresh = function() {
-            $.when.apply($, _.map(config.places, function(place){
-                return $.get(config.weather.weatherApi, {
+            $.whenAll(_.map(config.places, function(place){
+                return $.get(config.weather.apiUrl, {
                     APPID: config.weather.apikey,
                     q: place.query,
                     units: 'metric'

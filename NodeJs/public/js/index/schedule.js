@@ -3,40 +3,122 @@
         var instance;
         var config;
         var refreshTimeoutObject;
+        var $schedule;
+        var depatureTemplate;
+        var linesCache;
+
+        var refresh = function() {
+            updateDeparturesHtmlAsync(config.busStopCodes, $schedule.find('.buses.body'));
+            updateDeparturesHtmlAsync(config.tramStopCodes, $schedule.find('.trams.body'));
+        };
+
+        var updateDeparturesHtmlAsync = function(stopCodes, $parentElement) {
+            return $.whenAll(_.map(stopCodes, function(code) {
+                return $.get(config.apiUrl, {
+                    request: 'stop',
+                    format: 'json',
+                    user: config.username,
+                    pass: config.password,
+                    code: code,
+                    dep_limit: 20,
+                    time_limit: 360,
+                    p: '1110000000100000000'
+                });
+            })).done(function(){
+                var results = _.map(arguments, function(x){return JSON.parse(x[0])[0]});
+                var departures = _.reduce(results, function(memo, x) {
+                    return memo.concat(x.departures);
+                }, []);
+
+                var lineCodes = _.chain(departures).map(function(x){return x.code}).uniq().value();
+                getLinesAsync(lineCodes)
+                    .done(function(lines){
+                        var templatesData = _.chain(departures)
+                            .map(function (x) {
+                                return _.extend({
+                                    moment: moment({year: x.date / 10000 >> 0, month: ((x.date / 100 >> 0) % 100) - 1, day: x.date % 100, hour: x.time / 100 >> 0, minute: x.time % 100 })
+                                }, x);
+                            })
+                            .sortBy(function(x){return x.dateTime})
+                            .map(function(x) {
+                                return {
+                                    lineCodeShort: lines[x.code].code_short,
+                                    lineEnd: lines[x.code].line_end,
+                                    formattedTime: x.moment.format('HH:mm'),
+                                    isoDateTime: x.moment.toISOString()
+                                };
+                            })
+                            .value();
+
+                        var departuresHtml = futu.templates.renderMany(depatureTemplate, templatesData);
+                        $parentElement.html(departuresHtml);
+                    });
+            });
+        };
+
+        var getLinesAsync = function(lineCodes, callback) {
+            var deferred = $.Deferred();
+
+            var missingLineCodes = _.difference(lineCodes, _.keys(linesCache));
+            if (missingLineCodes.length > 0)
+            {
+                $.whenAll(_.map(lineCodes, function(code){
+                    return $.get(config.apiUrl, {
+                        request: 'lines',
+                        format: 'json',
+                        user: config.username,
+                        pass: config.password,
+                        query: code,
+                        p: '11111'
+                    });
+                })).done(function(){
+                    var results = _.map(arguments, function(x){return JSON.parse(x[0])[0]});
+                    var lines = _.object(lineCodes, results);
+                    _.extend(linesCache, lines);
+                    deferred.resolve(linesCache);
+                });
+            }
+            else
+            {
+                deferred.resolve(linesCache);
+            }
+
+            return deferred;
+        };
+
+        var formatTime = function(hours, minutes) {
+            return hours + ':' + (minutes < 10 ? '0' : '') + minutes;
+        };
+
+        var removePastDepatures = function() {
+            $schedule.find('.body tr').each(function() {
+                var now = moment().add(-1, 'm');
+                var departure = moment($(this).data('isoDateTime'));
+                if(now < departure) return;
+                
+                $(this).hide(400, function() {
+                    $(this).remove();
+                });
+            });
+        };
 
         function init() {
             return {
                 start: function (options) {
                     config = options;
 
+                    $schedule = $('#schedule');
+
+                    depatureTemplate = futu.templates.find('#schedule-depature-template');
+                    linesCache = {};
+
                     clearTimeout(refreshTimeoutObject);
                     refresh();
                     refreshTimeoutObject = setInterval(refresh, config.refreshInterval);
-                },
-            };
-        };
 
-        function refresh() {
-            // $.when.apply($, _.map(config.queries, function(query){
-            //     return $.get('http://api.openweathermap.org/data/2.5/weather', {
-            //         APPID: config.apikey,
-            //         q: query,
-            //         units: 'metric'
-            //     });
-            // })).done(function(){
-            //     var results = _.map(arguments, function(x){return x[0]});
-            //     var templatesData = _.map(results, function(x) {
-            //         return {
-            //             city: x.name,
-            //             temperature: formatTemperature(x.main.temp),
-            //             icon: 'http://openweathermap.org/img/w/' + x.weather[0].icon + '.png'
-            //         };
-            //     });
-                
-            //     var itemTemplate = futu.templates.find('#weather-item-template');
-            //     var itemsHtml = futu.templates.renderMany(itemTemplate, templatesData);
-            //     $('.weather table').html(itemsHtml);
-            // });
+                    setInterval(removePastDepatures, config.pastFilteringInterval);
+                }
+            };
         };
          
         return {
@@ -50,121 +132,3 @@
         };
     })();
 }(window.futu = window.futu || {}, jQuery));
-
-
-// $(function(){
-//     var REITTIOPAS_REFRESH_TIMEOUT_MILLIS = 1000*60*1;
-    
-//     var REITTIOPAS_BASE_URL = 'http://api.reittiopas.fi/hsl/prod/?request=stop&user=futurice&pass=9e0h2s3h&format=json&code=';
-//     var SHORT_WALK_STOP_URL = REITTIOPAS_BASE_URL + '1045';
-//     var LONG_WALK_STOP_URL = REITTIOPAS_BASE_URL + '1055';
-
-//     // Will ignore buses of the same line with this amount or less minutes in between.
-//     var TIME_LIMIT = 10;
-//     // Set this to ignore time limit above.
-//     var IGNORE_TIME_LIMIT = true;
-//     var ARRIVAL_ITEMS = 4;
-
-// 	/*
-//      * Bus schedules
-//      */
-    
-//     function diffMinutesToStr(diffMinutes) {
-//         var hours = Math.floor(diffMinutes / 60);
-//         var minStr = ' min'; //(diffMinutes%60 === 1) ? " min" : " mins";
-//         if (false /*hours > 0*/) {
-//             return hours + 'h' + diffMinutes%60 + minStr;
-//         } else {
-//             return diffMinutes + minStr;
-//         }
-//     }
-    
-//     function populateTable($table, arrivalData) {
-//     	$table.empty();
-
-//         var total = 0;
-//         for (var i=0; i<arrivalData.length && total<ARRIVAL_ITEMS; i++) {
-//             var item = arrivalData[i];
-//             var stopTime = formatHourMinTime(item.time);
-//             var diffTime = Math.round((item.time - new Date()) / (1000*60));
-//             if (diffTime > 0) {
-//                 $table.append(
-//                     '<tr><td class="line">' + item.busLineName + '</td>' +
-//                     '<td class="destination">' + /*item.destination +*/ (item.busLineName == 501 ? 'Espoo' : 'Helsinki') + '</td>' +
-//                     '<td class="diffTime">' + diffMinutesToStr(diffTime) + '</td>' +
-//                     '<td class="stopTime">' + stopTime + '</td></tr>');
-//                 total++;
-//             }
-//             if (i >= arrivalData.length) {
-//                 break;
-//             }
-//         }
-//     }
-    
-//     function isTrueData(evaluateItem, savedItems) {
-//         if (!savedItems || !savedItems.length) {
-//             return true;
-//         }
-            
-//         for (var i=0; i<savedItems.length; ++i) {
-//             var item = savedItems[i];
-//             var timeDiff = (evaluateItem.time.getHours()*60 + evaluateItem.time.getMinutes()) - (item.time.getHours()*60 + item.time.getMinutes());
-//             if (evaluateItem.busLineName === item.busLineName && (timeDiff <= TIME_LIMIT && !IGNORE_TIME_LIMIT)) {
-//                 return false;
-//             }
-//         }
-        
-//         return true;
-//     }
-    
-//     function getReittiopasStopData(apiData) {
-//         var lines = apiData.split('\n'),
-//         	returnData = [];
-        
-//         for (var i=1; i<lines.length; ++i) {
-//             var line = lines[i];
-//             if (line && line.length && line.length > 1) {
-//                 var data = line.split('|');
-//                 var time = lpad(data[0], '0', 4);
-//                 var hour = parseInt(time.substring(0, 2), 10);
-//                 var minute = parseInt(time.substring(2, 4), 10);
-//                 var isTomorrow = 0;
-//                 if (hour > 23) {
-//                     isTomorrow = 1;
-//                     hour = hour - 24;
-//                 }
-                
-//                 var now = new Date();
-//                 var atStop = new Date(now.getFullYear(), now.getMonth(), now.getDate()+isTomorrow, hour, minute, 0);
-//                 var diffMinutes = (atStop.getTime() - now.getTime()) / (1000*60);
-                
-//                 data = {
-//                     minutes: diffMinutes,
-//                     time: atStop,
-//                     busLineName: data[1],
-//                     destination: data[2]
-//                 };
-    
-//                 if (isTrueData(data, returnData)) {
-//                     returnData[returnData.length] = data;
-//                 }
-//             }
-//     	}
-        
-//         return returnData;
-//     }
-    
-//     function refreshReittiopasData() {
-//         $.get(SHORT_WALK_STOP_URL, function(data) {
-//             var $table = $('table.shortwalk');
-//             populateTable($table, getReittiopasStopData(data));
-//         });
-//         $.get(LONG_WALK_STOP_URL, function(data) {
-//             var $table = $('table.longwalk');
-//             populateTable($table, getReittiopasStopData(data));
-//         });
-//     }
-
-//     refreshReittiopasData();
-//     setInterval(refreshReittiopasData, REITTIOPAS_REFRESH_TIMEOUT_MILLIS);
-// });
