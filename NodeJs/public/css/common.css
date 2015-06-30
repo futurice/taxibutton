@@ -1,24 +1,24 @@
 @font-face {
 	font-family: SharpSans;
 	font-weight: 300;
-	src: url("/fonts/SharpSansNo1-Medium.otf") format("opentype");
+	src: url('/fonts/SharpSansNo1-Medium_gdi.woff') format('woff');
 }
 
 @font-face {
 	font-family: SharpSans;
-	src: url("/fonts/SharpSansNo1-Semibold.otf") format("opentype");
+	src: url('/fonts/SharpSansNo1-Semibold_gdi.woff') format('woff');
 }
 
 @font-face {
 	font-family: SharpSans;
 	font-weight: bold;
-	src: url("/fonts/SharpSansNo1-Bold.otf") format("opentype");
+	src: url('/fonts/SharpSansNo1-Bold_gdi.woff') format('woff');
 }
 
 @font-face {
 	font-family: SharpSans;
 	font-weight: 900;
-	src: url("/fonts/SharpSansNo1-Extrabold.otf") format("opentype");
+	src: url('/fonts/SharpSansNo1-Extrabold_gdi.woff') format('woff');
 }
 
 b {font-weight:bold;}
@@ -29,7 +29,7 @@ body {max-width:1080px; max-height:1920px; font-family:'SharpSans'; color:black;
 
 #calendar {height:890px; padding-left:48px; color:white; background-color:rgb(55, 53, 53);}
 #calendar .logo {margin-top:60px;}
-#calendar .weekdays {margin-top:60px; overflow:hidden; line-height:80px; font-size:72px; text-align:center;}
+#calendar .weekdays {margin-top:60px; overflow:hidden; text-align:center; line-height:80px; font-size:72px;}
 #calendar .weekdays .item {float:left; color:#131212; margin-left:45px;}
 #calendar .weekdays .item.weekend {color:#4e4c4c;}
 #calendar .weekdays .item:first-child {color:white; font-size:80px; margin-left:0;}

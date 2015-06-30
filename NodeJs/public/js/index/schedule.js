@@ -96,7 +96,7 @@
                 var departure = moment($(this).data('isoDateTime'));
                 if(now < departure) return;
                 
-                $(this).hide(400, function() {
+                $(this).fadeOut(400, function() {
                     $(this).remove();
                 });
             });
