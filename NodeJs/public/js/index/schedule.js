@@ -4,6 +4,7 @@
         var config;
         var refreshTimeoutObject;
         var removePastDepaturesTimeoutObject;
+        var switchStopsCounter;
         var switchStopsTimeoutObject;
         var $schedule;
         var stopTemplate;
@@ -24,6 +25,9 @@
                     var html = futu.templates.renderMany(stopTemplate, templatesData);
                     $schedule.find('.left .wrapper').html(html);
                     updateDeparturesHtml(results);
+
+                    switchStopsCounter = 0;
+                    switchStopsTimeoutObject = setInterval(switchStops, config.switchStopsInterval);
                 });
         };
 
@@ -112,17 +116,6 @@
             return deferred;
         };
 
-        var removePastDepatures = function() {
-            $schedule.find('.body tr').each(function() {
-                var now = moment().add(-1, 'm');
-                var departure = moment($(this).data('isoDateTime'));
-                if(now < departure) return;
-                
-                $(this).remove();
-            });
-        };
-
-        var switchStopsCounter;
         var switchStops = function(argument) {
             switchStopsCounter = (switchStopsCounter + 1) % config.stopCodes.length;
 
@@ -130,7 +123,7 @@
             $schedule.find('.left .wrapper').animate({
                 left: -halfWidth + 'px',
             }, {
-                duration: 1000,
+                duration: 600,
                 done: function() {
                     var $this = $(this);
                     $this.css('left', '0');
@@ -138,10 +131,22 @@
                 }
             });
 
+            $schedule.find('.right .map .icon').hide();
+            $schedule.find('.right .map .icon-' + (switchStopsCounter+1)).show();
             $schedule.find('.right .map').animate({
                 left: -((switchStopsCounter / 2 >> 0) * halfWidth) + 'px',
             }, {
-                duration: 1000,
+                duration: 600,
+            });
+        };
+
+        var removePastDepatures = function() {
+            $schedule.find('.body tr').each(function() {
+                var now = moment().add(-1, 'm');
+                var departure = moment($(this).data('isoDateTime'));
+                if(now < departure) return;
+                
+                $(this).remove();
             });
         };
 
@@ -163,9 +168,7 @@
                     clearTimeout(removePastDepaturesTimeoutObject);
                     removePastDepaturesTimeoutObject = setInterval(removePastDepatures, config.removePastDepaturesInterval);
 
-                    switchStopsCounter = 0;
                     clearTimeout(switchStopsTimeoutObject);
-                    switchStopsTimeoutObject = setInterval(switchStops, config.switchStopsInterval);
                 }
             };
         };
