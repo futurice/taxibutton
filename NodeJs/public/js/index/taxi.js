@@ -3,12 +3,26 @@
         var instance;
         var config;
         var $frames;
+        var $overlays;
         var orderNumber;
         var pressedCounterTimeoutObject;
+        var overlayTimeoutObject;
 
         var showFrame = function (frameClass) {
             $frames.find('.frame').css('display', 'none');
             $frames.find('.frame.' + frameClass).css('display', 'table-cell');
+        };
+
+        var showOverlay = function (overlayClass, timeout) {
+            clearTimeout(overlayTimeoutObject);
+
+            $overlays.find('.overlay').css('display', 'none');
+            var $overlay = $overlays.find('.overlay.' + overlayClass);
+            
+            $overlay.css('display', 'table-cell');
+            overlayTimeoutObject = setTimeout(function(){
+                $overlay.fadeOut(2000);
+            }, timeout);
         };
 
         var newStateFunctions = {
@@ -47,8 +61,8 @@
                 $previousTaxi.find('.taxi-number').text(t.parameters.taxiNumber);
                 $previousTaxi.show();
                 setTimeout(function(){
-                    $previousTaxi.fadeOut(1500);
-                }, config.taxiConfirmedTimeout + 60 * 1000);
+                    $previousTaxi.fadeOut(2000);
+                }, config.previousTaxiTimeout);
             },
             'ALL_BUSY': function(t) {showFrame('all-busy');},
             'ORDER_FAILED': function(t) {showFrame('order-failed');}
@@ -58,11 +72,20 @@
             return {
                 start: function (options) {
                     config = options;
+                    config.previousTaxiTimeout = config.taxiConfirmedTimeout + 60 * 1000;
+                    config.unrecognizedSmsTimeout = 30 * 1000;
 
                     $frames = $('#taxi .frames');
+                    $overlays = $('#taxi .overlays');
                 },
                 transition: function (data) {
                     newStateFunctions[data.newState](data);
+                },
+                unrecognizedSms: function (data) {
+                    var $overlay = $overlays.find('.overlay.unrecognized-sms');
+                    $overlay.find('.message').text(data.message);
+                    $overlay.find('.phone-number').text(data.phoneNumber);
+                    showOverlay('unrecognized-sms', config.unrecognizedSmsTimeout);
                 }
             };
         };

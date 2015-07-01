@@ -51,8 +51,8 @@ body {max-width:1080px; max-height:1920px; font-family:'SharpSans'; color:black;
     to {left:-50%;}
 }
 #calendar .ticker .line {
--webkit-animation:tickerLineKeyframes 12s linear 0s infinite normal;
-        animation:tickerLineKeyframes 12s linear 0s infinite normal;
+-webkit-animation:tickerLineKeyframes 15s linear 0s infinite normal;
+        animation:tickerLineKeyframes 15s linear 0s infinite normal;
 }
 #calendar .ticker .name {color:#ffde00;}
 #calendar .ticker .time {color:#ffde00;}
@@ -65,7 +65,7 @@ body {max-width:1080px; max-height:1920px; font-family:'SharpSans'; color:black;
 #schedule .left .stop .header img {margin-right:18px;}
 #schedule .left .stop table {table-layout:fixed; width:100%; font-size:28px;}
 #schedule .left .stop table td {overflow:hidden; padding:19px 0;}
-#schedule .left .stop table tr:nth-child(odd) {background-color:#f5f5f5;}
+#schedule .left .stop table tr:nth-child(odd) {background-color:#e5e5e5;}
 #schedule .left .stop table tr:nth-child(1n+9) {display:none;}
 #schedule .left .stop table tr td:nth-child(1) {width:20%; text-align:center; font-weight:bold;}
 #schedule .left .stop table tr td:nth-child(2) {width:62%; padding-left:12px;}
@@ -79,7 +79,7 @@ body {max-width:1080px; max-height:1920px; font-family:'SharpSans'; color:black;
 #schedule .right .map .icon-4 {top:229px; left:771px;}
 
 #taxi {height:356px; position:relative; background-color:#ffde00;}
-#taxi .frames {width:100%; height:100%; display:table;}
+#taxi .frames {display:table; width:100%; height:100%;}
 #taxi .frame {display:none; position:relative; vertical-align:middle; text-align:center; font-size:40px; line-height:1.3;}
 #taxi .frame .icon {margin-bottom:20px;}
 #taxi .frame.idle {display:table-cell;}
@@ -99,3 +99,11 @@ body {max-width:1080px; max-height:1920px; font-family:'SharpSans'; color:black;
 #taxi .frame.order-failed {}
 #taxi .frame.order-failed .icon {margin-bottom:0;}
 #taxi .frame.order-failed .oops {font-weight:900; display:inline-block; margin-bottom:30px;}
+#taxi .overlays {display:table; position:absolute; width:100%; height:100%; top:0; left:0;}
+#taxi .overlay {display:none; position:relative; vertical-align:middle; text-align:center; font-size:40px; line-height:1.3; background-color:#ffde00;}
+#taxi .overlay.unrecognized-sms {}
+#taxi .overlay.unrecognized-sms .icon {margin-bottom:0;}
+#taxi .overlay.unrecognized-sms .message {font-size:28px; font-weight:bold;}
+#taxi .overlay.unrecognized-sms .phone {margin-top:12px;}
+#taxi .overlay.unrecognized-sms .phone .icon {vertical-align:middle;}
+#taxi .overlay.unrecognized-sms .phone-number {vertical-align:middle; font-weight:300;}

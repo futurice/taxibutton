@@ -34,6 +34,7 @@ $(function() {
 			}
 			else if(data.type == 'unrecognizedSms')
 			{
+				futu.taxi.getInstance().unrecognizedSms(data);
 				console.log('Unrecognized SMS message from ' + data.phoneNumber + ' "' + data.message + '"');
 			}
 		};
