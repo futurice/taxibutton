@@ -39,7 +39,7 @@ body {max-width:1080px; max-height:1920px; font-family:'SharpSans'; color:black;
 #calendar .this-place .name {display:table-cell; color:#ffde00;}
 #calendar .this-place .weather {display:table-cell; text-align:right; padding-right:34px; font-size:78px;}
 #calendar .this-place .weather .icon {height:90px;}
-#calendar .ticker {white-space: nowrap; margin-top:60px; font-size:30px;}
+#calendar .ticker {white-space:nowrap; margin-top:60px; font-size:30px;}
 #calendar .ticker .wrapper {display:table; position:relative;}
 #calendar .ticker .line {display:table-cell; position:relative; padding-right:100px;}
 @-webkit-keyframes tickerLineKeyframes {
@@ -58,17 +58,20 @@ body {max-width:1080px; max-height:1920px; font-family:'SharpSans'; color:black;
 #calendar .ticker .time {color:#ffde00;}
 
 #schedule {height:674px; background-color:white; overflow:hidden;}
-#schedule .left {float:left; width:50%; position:relative;}
-#schedule .right {float:right; width:50%; position:relative;}
-#schedule table {table-layout:fixed; width:100%;}
-#schedule table.header {font-weight:bold;}
-#schedule table td {overflow:hidden; padding:16px 24px;}
-#schedule table tr:nth-child(even) {background-color:#f5f5f5;}
-#schedule table tr td:nth-child(1) {width:18%;}
-#schedule table tr td:nth-child(2) {width:64%;}
-#schedule table tr td:nth-child(3) {width:18%;}
-#schedule .buses .img-stub,
-#schedule .trams .img-stub {display:inline-block; width:50px; height:50px; border:2px solid black; vertical-align:middle;}
+#schedule .left {float:left; width:50%; height:100%; position:relative; overflow:hidden; white-space:nowrap;}
+#schedule .left .wrapper {position:absolute;}
+#schedule .left .wrapper .stop {display:inline-block; position:relative; width:540px;}
+#schedule .left .stop .header {padding:43px 25px; font-weight:bold; font-size:30px;}
+#schedule .left .stop .header img {margin-right:18px;}
+#schedule .left .stop table {table-layout:fixed; width:100%; font-size:28px;}
+#schedule .left .stop table td {overflow:hidden; padding:19px 0;}
+#schedule .left .stop table tr:nth-child(odd) {background-color:#f5f5f5;}
+#schedule .left .stop table tr:nth-child(1n+9) {display:none;}
+#schedule .left .stop table tr td:nth-child(1) {width:20%; text-align:center; font-weight:bold;}
+#schedule .left .stop table tr td:nth-child(2) {width:62%; padding-left:12px;}
+#schedule .left .stop table tr td:nth-child(3) {width:18%; padding-right:16px; text-align:center; font-weight:bold;}
+#schedule .right {float:right; width:50%; position:relative; overflow:hidden;}
+#schedule .right .map {position:relative;}
 
 #taxi {height:356px; position:relative; background-color:#ffde00;}
 #taxi .frames {width:100%; height:100%; display:table;}
@@ -76,7 +79,8 @@ body {max-width:1080px; max-height:1920px; font-family:'SharpSans'; color:black;
 #taxi .frame .icon {margin-bottom:20px;}
 #taxi .frame.idle {display:table-cell;}
 #taxi .frame.idle .indicator {position:absolute; top:25px; left:25px;}
-#taxi .frame.idle .previous-taxi {display:none; position:absolute; bottom:0; left:0; width:100%; height:96px; line-height:96px; background-color:#FFF7C5;}
+#taxi .frame.idle .info {font-size:32px; font-weight:300;}
+#taxi .frame.idle .previous-taxi {display:none; position:absolute; bottom:0; left:0; width:100%; height:96px; line-height:96px; background-color:#FFF7C5; font-size:30px;}
 #taxi .frame.idle .previous-taxi .icon {position: absolute; left:40px; top:25px;}
 #taxi .frame.pressed {}
 #taxi .frame.pressed .counter {font-size:125px; font-weight:300;}

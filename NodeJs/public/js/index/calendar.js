@@ -34,7 +34,7 @@
             $ticker.html(futu.templates.render(tickerTemplate, {lineHtml: lineHtml}));
         };
 
-        var renderDayNumbers = function(now){
+        var renderWeekdays = function(now){
             var dayMoments = _.map(_.range(0, 8), function(offset){
                 var cloneNow = moment(now);
                 return cloneNow.add(offset, 'd');
@@ -59,7 +59,7 @@
             $calendar.find('.current-time').text(thisPlaceNow.format('HH:mm'));
             if(thisPlaceNow.date() != thisPlaceLastNow.date())
             {
-                renderDayNumbers(thisPlaceNow);
+                renderWeekdays(thisPlaceNow);
             }
             thisPlaceLastNow = thisPlaceNow;
 
@@ -104,7 +104,7 @@
                     thisPlaceWeatherTemplate = futu.templates.find('#calendar-this-place-weather-template');
                     tickerTemplate = futu.templates.find('#calendar-ticker-template');
                     tickerItemTemplate = futu.templates.find('#calendar-ticker-item-template');
-                    thisPlaceLastNow = moment(0);
+                    thisPlaceLastNow = moment().add(-1, 'd');
 
                     renderCalendar();
 

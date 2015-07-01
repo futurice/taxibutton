@@ -3,16 +3,39 @@
         var instance;
         var config;
         var refreshTimeoutObject;
+        var removePastDepaturesTimeoutObject;
+        var switchStopsTimeoutObject;
         var $schedule;
+        var stopTemplate;
         var depatureTemplate;
         var linesCache;
 
-        var refresh = function() {
-            updateDeparturesHtmlAsync(config.busStopCodes, $schedule.find('.buses.body'));
-            updateDeparturesHtmlAsync(config.tramStopCodes, $schedule.find('.trams.body'));
+        var render = function() {
+            getStopsDataAsync(config.stopCodes)
+                .done(function() {
+                    var results = _.map(arguments, function(x){return JSON.parse(x[0])});
+                    var templatesData = _.map(results, function(x, index) {
+                        return {
+                            index: index,
+                            stopName: x[0].name_fi
+                        }
+                    });
+
+                    var html = futu.templates.renderMany(stopTemplate, templatesData);
+                    $schedule.find('.left .wrapper').html(html);
+                    updateDeparturesHtml(results);
+                });
         };
 
-        var updateDeparturesHtmlAsync = function(stopCodes, $parentElement) {
+        var refresh = function() {
+            getStopsDataAsync(config.stopCodes)
+                .done(function() {
+                    var results = _.map(arguments, function(x){return JSON.parse(x[0])});
+                    updateDeparturesHtml(results);
+                });
+        };
+
+        var getStopsDataAsync = function(stopCodes) {
             return $.whenAll(_.map(stopCodes, function(code) {
                 return $.get(config.apiUrl, {
                     request: 'stop',
@@ -24,9 +47,12 @@
                     time_limit: 360,
                     p: '1110000000100000000'
                 });
-            })).done(function(){
-                var results = _.map(arguments, function(x){return JSON.parse(x[0])[0]});
-                var departures = _.reduce(results, function(memo, x) {
+            }));
+        };
+
+        var updateDeparturesHtml = function(stopResults) {
+            _.each(stopResults, function(stopArray, stopIndex) {
+                var departures = _.reduce(stopArray, function(memo, x) {
                     return memo.concat(x.departures);
                 }, []);
 
@@ -39,7 +65,7 @@
                                     moment: moment({year: x.date / 10000 >> 0, month: ((x.date / 100 >> 0) % 100) - 1, day: x.date % 100, hour: x.time / 100 >> 0, minute: x.time % 100 })
                                 }, x);
                             })
-                            .sortBy(function(x){return x.dateTime})
+                            .sortBy(function(x){return x.moment})
                             .map(function(x) {
                                 return {
                                     lineCodeShort: lines[x.code].code_short,
@@ -50,8 +76,8 @@
                             })
                             .value();
 
-                        var departuresHtml = futu.templates.renderMany(depatureTemplate, templatesData);
-                        $parentElement.html(departuresHtml);
+                        var html = futu.templates.renderMany(depatureTemplate, templatesData);
+                        $schedule.find('.stop-' + stopIndex + ' .body').html(html);
                     });
             });
         };
@@ -86,19 +112,36 @@
             return deferred;
         };
 
-        var formatTime = function(hours, minutes) {
-            return hours + ':' + (minutes < 10 ? '0' : '') + minutes;
-        };
-
         var removePastDepatures = function() {
             $schedule.find('.body tr').each(function() {
                 var now = moment().add(-1, 'm');
                 var departure = moment($(this).data('isoDateTime'));
                 if(now < departure) return;
                 
-                $(this).fadeOut(400, function() {
-                    $(this).remove();
-                });
+                $(this).remove();
+            });
+        };
+
+        var switchStopsCounter;
+        var switchStops = function(argument) {
+            switchStopsCounter = (switchStopsCounter + 1) % config.stopCodes.length;
+
+            var halfWidth = $schedule.width() / 2;
+            $schedule.find('.left .wrapper').animate({
+                left: -halfWidth + 'px',
+            }, {
+                duration: 1000,
+                done: function() {
+                    var $this = $(this);
+                    $this.css('left', '0');
+                    $this.append($this.children()[0]);
+                }
+            });
+
+            $schedule.find('.right .map').animate({
+                left: -((switchStopsCounter / 2 >> 0) * halfWidth) + 'px',
+            }, {
+                duration: 1000,
             });
         };
 
@@ -109,14 +152,20 @@
 
                     $schedule = $('#schedule');
 
+                    stopTemplate = futu.templates.find('#schedule-stop-template');
                     depatureTemplate = futu.templates.find('#schedule-depature-template');
                     linesCache = {};
 
+                    render();
                     clearTimeout(refreshTimeoutObject);
-                    refresh();
                     refreshTimeoutObject = setInterval(refresh, config.refreshInterval);
 
-                    setInterval(removePastDepatures, config.pastFilteringInterval);
+                    clearTimeout(removePastDepaturesTimeoutObject);
+                    removePastDepaturesTimeoutObject = setInterval(removePastDepatures, config.removePastDepaturesInterval);
+
+                    switchStopsCounter = 0;
+                    clearTimeout(switchStopsTimeoutObject);
+                    switchStopsTimeoutObject = setInterval(switchStops, config.switchStopsInterval);
                 }
             };
         };

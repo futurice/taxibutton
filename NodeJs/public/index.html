@@ -23,26 +23,12 @@
         </div>
         <div id="schedule">
             <div class="left">
-                <table class="buses header">
-                    <tr>
-                        <td><div class="img-stub"></div></td>
-                        <td>By Bus</td>
-                        <td></td>
-                    </tr>
-                </table>
-                <table class="buses body">
-                </table>
+                <div class="wrapper"></div>
             </div>
             <div class="right">
-                <table class="trams header">
-                    <tr>
-                        <td><div class="img-stub"></div></td>
-                        <td>By Tram</td>
-                        <td></td>
-                    </tr>
-                </table>
-                <table class="trams body">
-                </table>
+                <div class="map">
+                    <img src="/img/map.jpg" alt=""/>
+                </div>
             </div>
         </div>
         <div id="taxi">
@@ -53,6 +39,8 @@
                         <b>&#x2015; TAXI &#x2015;</b>
                         <br/>
                         To order a taxi, <b>press and hold</b> the button.
+                        <br/>
+                        <span class="info">(the button is to the left)</span>
                     </p>
                     <div class="previous-taxi">
                         <img class="icon" src="/img/taxi/previous-taxi.png" alt=""/>
@@ -79,27 +67,27 @@
                     <p>
                         <img class="icon" src="/img/taxi/ordering-taxi.png" alt=""/>
                         <br/>
-                        We are <b>processing your order</b>
+                        We are <b>processing your order.</b>
                         <br/>
-                        <span class="info">it might take up to 8 min. (but usually it never does)</span>
+                        <span class="info">it might take up to 8 min (but usually it never does)</span>
                     </p>
                 </div>
                 <div class="frame awaiting-taxi">
                     <p>
                         <img class="icon" src="/img/taxi/awaiting-taxi.png" alt=""/>
                         <br/>
-                        We are <b>looking for taxi</b>
+                        We are <b>looking for taxi.</b>
                         <br/>
-                        <span class="info">it might take up to 8 min. (but usually it never does)</span>
+                        <span class="info">it might take up to 8 min (but usually it never does)</span>
                     </p>
                 </div>
                 <div class="frame taxi-confirmed">
                     <p>
                         <img class="icon" src="/img/taxi/taxi-confirmed.png" alt=""/>
                         <br/>
-                        Your order <b>#<span class="order-number">000</span> (taxi number <span class="taxi-number">000</span>)</b>
+                        Your order is <b>#<span class="order-number">000</span> (taxi plate #<span class="taxi-number">000</span>).</b>
                         <br/>
-                        Taxi will be waiting downstairs
+                        Taxi will be waiting downstairs.
                     </p>
                 </div>
                 <div class="frame all-busy">
@@ -141,6 +129,16 @@
 
     <script id="calendar-ticker-item-template" type="html/template">
         <span class="place-{{index}}"><span class="name">{{name}}</span>&nbsp;<span class="time">{{time}}</span>&nbsp;<span class="temperature">{{temperature}}</span>&deg;</span>
+    </script>
+
+    <script id="schedule-stop-template" type="html/template">
+        <div class="stop stop-{{index}}">
+            <div class="header">
+                <img class="icon" src="/img/bus-stop.svg" alt=""/>
+                {{stopName}}
+            </div>
+            <table class="body"></table>
+        </div>
     </script>
 
     <script id="schedule-depature-template" type="html/template">
