@@ -15,12 +15,15 @@
             getStopsDataAsync(config.stopCodes)
                 .done(function() {
                     var results = _.map(arguments, function(x){return JSON.parse(x[0])});
-                    var templatesData = _.map(results, function(x, index) {
-                        return {
-                            index: index,
-                            stopName: x[0].name_fi
-                        }
-                    });
+                    var templatesData = _.chain(results)
+                        .map(function(x, index) {
+                            return {
+                                index: index,
+                                stopName: x[0].name_fi
+                            }
+                        })
+                        .reverse()
+                        .value();
 
                     var html = futu.templates.renderMany(stopTemplate, templatesData);
                     $schedule.find('.left .wrapper').html(html);
@@ -92,7 +95,7 @@
             var missingLineCodes = _.difference(lineCodes, _.keys(linesCache));
             if (missingLineCodes.length > 0)
             {
-                $.whenAll(_.map(lineCodes, function(code){
+                $.whenAll(_.map(missingLineCodes, function(code){
                     return $.get(config.apiUrl, {
                         request: 'lines',
                         format: 'json',
@@ -119,25 +122,29 @@
         var switchStops = function(argument) {
             switchStopsCounter = (switchStopsCounter + 1) % config.stopCodes.length;
 
-            var halfWidth = $schedule.width() / 2;
-            $schedule.find('.left .wrapper').animate({
-                left: -halfWidth + 'px',
-            }, {
+            $schedule.find('.left .wrapper').children().last().fadeOut({
                 duration: 600,
                 done: function() {
                     var $this = $(this);
-                    $this.css('left', '0');
-                    $this.append($this.children()[0]);
+                    $this.parent().prepend($this);
+                    $this.show();
                 }
             });
 
             $schedule.find('.right .map .icon').hide();
-            $schedule.find('.right .map .icon-' + (switchStopsCounter+1)).show();
-            $schedule.find('.right .map').animate({
-                left: -((switchStopsCounter / 2 >> 0) * halfWidth) + 'px',
-            }, {
-                duration: 600,
-            });
+            $schedule.find('.right .map .icon-' + (switchStopsCounter + 1)).show();
+            
+            if(switchStopsCounter % 2 == 0)
+            {
+                $schedule.find('.right').children('.map').last().fadeOut({
+                    duration: 600,
+                    done: function() {
+                        var $this = $(this);
+                        $this.parent().prepend($this);
+                        $this.show();
+                    }
+                });
+            }
         };
 
         var removePastDepatures = function() {
@@ -146,7 +153,12 @@
                 var departure = moment($(this).data('isoDateTime'));
                 if(now < departure) return;
                 
-                $(this).remove();
+                $(this).fadeOut({
+                    duration: 500,
+                    done: function() {
+                        $(this).remove();
+                    }
+                });
             });
         };
 

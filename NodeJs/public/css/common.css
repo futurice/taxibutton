@@ -59,8 +59,8 @@ body {max-width:1080px; max-height:1920px; font-family:'SharpSans'; color:black;
 
 #schedule {height:674px; background-color:white; overflow:hidden;}
 #schedule .left {float:left; width:50%; height:100%; position:relative; overflow:hidden; white-space:nowrap;}
-#schedule .left .wrapper {position:absolute;}
-#schedule .left .wrapper .stop {display:inline-block; position:relative; width:540px;}
+#schedule .left .wrapper {}
+#schedule .left .stop {position:absolute; width:100%; background-color:white;}
 #schedule .left .stop .header {padding:43px 25px; font-weight:bold; font-size:30px;}
 #schedule .left .stop .header img {margin-right:18px;}
 #schedule .left .stop table {table-layout:fixed; width:100%; font-size:28px;}
@@ -70,13 +70,13 @@ body {max-width:1080px; max-height:1920px; font-family:'SharpSans'; color:black;
 #schedule .left .stop table tr td:nth-child(1) {width:20%; text-align:center; font-weight:bold;}
 #schedule .left .stop table tr td:nth-child(2) {width:62%; padding-left:12px;}
 #schedule .left .stop table tr td:nth-child(3) {width:18%; padding-right:16px; text-align:center; font-weight:bold;}
-#schedule .right {float:right; width:50%; position:relative; overflow:hidden;}
-#schedule .right .map {position:relative;}
+#schedule .right {float:right; width:50%; height:100%; position:relative; overflow:hidden;}
+#schedule .right .map {position:absolute; width:100%; height:100%;}
 #schedule .right .map .icon {position:absolute; display:none;}
 #schedule .right .map .icon-1 {top:96px; left:152px; display:block;}
 #schedule .right .map .icon-2 {top:300px; left:276px;}
-#schedule .right .map .icon-3 {top:244px; left:721px;}
-#schedule .right .map .icon-4 {top:229px; left:771px;}
+#schedule .right .map .icon-3 {top:244px; left:181px;}
+#schedule .right .map .icon-4 {top:229px; left:231px;}
 
 #taxi {height:356px; position:relative; background-color:#ffde00;}
 #taxi .frames {display:table; width:100%; height:100%;}
