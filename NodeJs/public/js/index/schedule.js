@@ -9,7 +9,6 @@
         var $schedule;
         var stopTemplate;
         var depatureTemplate;
-        var linesCache;
 
         var render = function() {
             getStopsDataAsync(config.stopCodes)
@@ -92,29 +91,21 @@
         var getLinesAsync = function(lineCodes, callback) {
             var deferred = $.Deferred();
 
-            var missingLineCodes = _.difference(lineCodes, _.keys(linesCache));
-            if (missingLineCodes.length > 0)
-            {
-                $.whenAll(_.map(missingLineCodes, function(code){
-                    return $.get(config.apiUrl, {
-                        request: 'lines',
-                        format: 'json',
-                        user: config.username,
-                        pass: config.password,
-                        query: code,
-                        p: '11111'
-                    });
-                })).done(function(){
-                    var results = _.map(arguments, function(x){return JSON.parse(x[0])[0]});
-                    var lines = _.object(lineCodes, results);
-                    _.extend(linesCache, lines);
-                    deferred.resolve(linesCache);
-                });
-            }
-            else
-            {
-                deferred.resolve(linesCache);
-            }
+            var query = lineCodes.join('|');
+            $.get(config.apiUrl, {
+                request: 'lines',
+                format: 'json',
+                user: config.username,
+                pass: config.password,
+                query: query,
+                p: '11111'
+            }).done(function(data) {
+                var linesArray = JSON.parse(data);
+                var lines = _.object(_.map(linesArray, function (x) {return x.code}), linesArray);
+                deferred.resolve(lines);
+            }).fail(function() {
+                deferred.reject();
+            });
 
             return deferred;
         };
@@ -171,7 +162,6 @@
 
                     stopTemplate = futu.templates.find('#schedule-stop-template');
                     depatureTemplate = futu.templates.find('#schedule-depature-template');
-                    linesCache = {};
 
                     render();
                     clearTimeout(refreshTimeoutObject);

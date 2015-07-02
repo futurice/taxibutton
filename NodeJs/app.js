@@ -71,6 +71,9 @@ taxiMachine.bind(function (event, oldState, newState) {
 var ws = require('nodejs-websocket');
 var wsServer = ws.createServer(function (connection) {
     logger.info('New WebSocket connection from %s:%s', connection.socket.remoteAddress, connection.socket.remotePort);
+    connection.on('error', function (err) {
+        logger.error('WebSocket connection error %s:%s - %s', connection.socket.remoteAddress, connection.socket.remotePort, err);
+    });
 }).listen(config.webSocketServer.port, function(){
     var address = wsServer.socket.address();
     logger.info('WebSocket server listening at %s:%s', address.address, address.port);
