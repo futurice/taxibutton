@@ -35,7 +35,7 @@
         };
 
         var renderWeekdays = function(now){
-            var dayMoments = _.map(_.range(0, 8), function(offset){
+            var dayMoments = _.map(_.range(0, 9), function(offset){
                 var cloneNow = moment(now);
                 return cloneNow.add(offset, 'd');
             });

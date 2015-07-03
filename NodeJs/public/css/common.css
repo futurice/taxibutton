@@ -23,14 +23,14 @@
 
 b {font-weight:bold;}
 
-body {max-width:1080px; max-height:1920px; font-family:'SharpSans'; color:black; background-color:white; overflow-x:hidden;}
+body {max-width:1200px; max-height:1920px; font-family:'SharpSans'; color:black; background-color:white; overflow-x:hidden;}
 
 #document {position:relative; width:100%; height:100%;}
 
 #calendar {height:890px; padding-left:48px; color:white; background-color:rgb(55, 53, 53);}
 #calendar .logo {margin-top:60px;}
 #calendar .weekdays {margin-top:60px; overflow:hidden; text-align:center; line-height:80px; font-size:72px;}
-#calendar .weekdays .item {float:left; color:#131212; margin-left:45px;}
+#calendar .weekdays .item {float:left; color:#131212; margin-left:43px;}
 #calendar .weekdays .item.weekend {color:#4e4c4c;}
 #calendar .weekdays .item:first-child {color:white; font-size:80px; margin-left:0;}
 #calendar .weekdays .item .dayOfWeek {font-size:50px; font-weight:bold;}
@@ -62,21 +62,21 @@ body {max-width:1080px; max-height:1920px; font-family:'SharpSans'; color:black;
 #schedule .left .wrapper {}
 #schedule .left .stop {position:absolute; width:100%; background-color:white;}
 #schedule .left .stop .header {padding:43px 25px; font-weight:bold; font-size:30px;}
-#schedule .left .stop .header img {margin-right:18px;}
+#schedule .left .stop .header img {margin-right:22px;}
 #schedule .left .stop table {table-layout:fixed; width:100%; font-size:28px;}
 #schedule .left .stop table td {overflow:hidden; padding:19px 0;}
 #schedule .left .stop table tr:nth-child(odd) {background-color:#e5e5e5;}
 #schedule .left .stop table tr:nth-child(1n+9) {display:none;}
-#schedule .left .stop table tr td:nth-child(1) {width:20%; text-align:center; font-weight:bold;}
-#schedule .left .stop table tr td:nth-child(2) {width:62%; padding-left:12px;}
+#schedule .left .stop table tr td:nth-child(1) {width:19%; text-align:center; font-weight:bold;}
+#schedule .left .stop table tr td:nth-child(2) {width:63%; padding-left:12px;}
 #schedule .left .stop table tr td:nth-child(3) {width:18%; padding-right:16px; text-align:center; font-weight:bold;}
 #schedule .right {float:right; width:50%; height:100%; position:relative; overflow:hidden;}
 #schedule .right .map {position:absolute; width:100%; height:100%;}
 #schedule .right .map .icon {position:absolute; display:none;}
 #schedule .right .map .icon-1 {top:96px; left:152px; display:block;}
 #schedule .right .map .icon-2 {top:300px; left:276px;}
-#schedule .right .map .icon-3 {top:244px; left:181px;}
-#schedule .right .map .icon-4 {top:229px; left:231px;}
+#schedule .right .map .icon-3 {top:244px; left:241px;}
+#schedule .right .map .icon-4 {top:229px; left:291px;}
 
 #taxi {height:356px; position:relative; background-color:#ffde00;}
 #taxi .frames {display:table; width:100%; height:100%;}
