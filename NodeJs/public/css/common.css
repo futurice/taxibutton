@@ -60,7 +60,8 @@ body {max-width:1200px; max-height:1920px; font-family:'SharpSans'; color:black;
 #schedule {height:674px; background-color:white; overflow:hidden;}
 #schedule .left {float:left; width:50%; height:100%; position:relative; overflow:hidden; white-space:nowrap;}
 #schedule .left .wrapper {}
-#schedule .left .stop {position:absolute; width:100%; background-color:white;}
+#schedule .left .stop {position:absolute; width:100%; background-color:white; visibility:hidden;}
+#schedule .left .stop.selected {visibility:visible;}
 #schedule .left .stop .header {padding:43px 25px; font-weight:bold; font-size:30px;}
 #schedule .left .stop .header img {margin-right:22px;}
 #schedule .left .stop table {table-layout:fixed; width:100%; font-size:28px;}
@@ -71,12 +72,14 @@ body {max-width:1200px; max-height:1920px; font-family:'SharpSans'; color:black;
 #schedule .left .stop table tr td:nth-child(2) {width:63%; padding-left:12px;}
 #schedule .left .stop table tr td:nth-child(3) {width:18%; padding-right:16px; text-align:center; font-weight:bold;}
 #schedule .right {float:right; width:50%; height:100%; position:relative; overflow:hidden;}
-#schedule .right .map {position:absolute; width:100%; height:100%;}
-#schedule .right .map .icon {position:absolute; display:none;}
-#schedule .right .map .icon-1 {top:106px; left:171px; display:block;}
-#schedule .right .map .icon-2 {top:331px; left:308px;}
-#schedule .right .map .icon-3 {top:270px; left:199px;}
-#schedule .right .map .icon-4 {top:253px; left:255px;}
+#schedule .right .map {position:absolute; width:100%; height:100%; visibility:hidden;}
+#schedule .right .map.selected {visibility:visible;}
+#schedule .right .map .icon {position:absolute; visibility:hidden;}
+#schedule .right .map .icon.selected {visibility:visible;}
+#schedule .right .map .icon-0 {top:106px; left:171px;}
+#schedule .right .map .icon-1 {top:331px; left:308px;}
+#schedule .right .map .icon-2 {top:270px; left:199px;}
+#schedule .right .map .icon-3 {top:253px; left:255px;}
 
 #taxi {height:356px; position:relative; background-color:#ffde00;}
 #taxi .frames {display:table; width:100%; height:100%;}

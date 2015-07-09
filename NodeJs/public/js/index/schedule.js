@@ -28,7 +28,8 @@
                     $schedule.find('.left .wrapper').html(html);
                     updateDeparturesHtml(results);
 
-                    switchStopsCounter = 0;
+                    switchStopsCounter = -1;
+                    switchStops();
                     switchStopsTimeoutObject = setInterval(switchStops, config.switchStopsInterval);
                 });
         };
@@ -110,32 +111,17 @@
             return deferred;
         };
 
-        var switchStops = function(argument) {
+        var switchStops = function() {
             switchStopsCounter = (switchStopsCounter + 1) % config.stopCodes.length;
 
-            $schedule.find('.left .wrapper').children().last().fadeOut({
-                duration: 600,
-                done: function() {
-                    var $this = $(this);
-                    $this.parent().prepend($this);
-                    $this.show();
-                }
-            });
+            $schedule.find('.left .stop').removeClass('selected');
+            $schedule.find('.left .stop-' + switchStopsCounter).addClass('selected');
 
-            $schedule.find('.right .map .icon').hide();
-            $schedule.find('.right .map .icon-' + (switchStopsCounter + 1)).show();
-            
-            if(switchStopsCounter % 2 == 0)
-            {
-                $schedule.find('.right').children('.map').last().fadeOut({
-                    duration: 600,
-                    done: function() {
-                        var $this = $(this);
-                        $this.parent().prepend($this);
-                        $this.show();
-                    }
-                });
-            }
+            $schedule.find('.right .map').removeClass('selected');
+            $schedule.find('.right .map-' + switchStopsCounter).addClass('selected');
+
+            $schedule.find('.right .map .icon').removeClass('selected');
+            $schedule.find('.right .map .icon-' + switchStopsCounter).addClass('selected');
         };
 
         var removePastDepatures = function() {
