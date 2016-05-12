@@ -2,6 +2,7 @@
     futu.schedule = (function () {
         var instance;
         var config;
+        var secrets;
         var refreshTimeoutObject;
         var removePastDepaturesTimeoutObject;
         var switchStopsCounter;
@@ -47,8 +48,8 @@
                 return $.get(config.apiUrl, {
                     request: 'stop',
                     format: 'json',
-                    user: config.username,
-                    pass: config.password,
+                    user: secrets.username,
+                    pass: secrets.password,
                     code: code,
                     dep_limit: 20,
                     time_limit: 360,
@@ -141,8 +142,9 @@
 
         function init() {
             return {
-                start: function (options) {
+                start: function (options, secret_options) {
                     config = options;
+                    secrets = secret_options;
 
                     $schedule = $('#schedule');
 

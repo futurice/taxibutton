@@ -24,8 +24,8 @@ $(function() {
 
 			if(data.type == 'config')
 			{
-				futu.calendar.getInstance().start(data.config.calendar);
-				futu.schedule.getInstance().start(data.config.schedule);
+				futu.calendar.getInstance().start(data.config.calendar, data.secrets.calendar);
+				futu.schedule.getInstance().start(data.config.schedule, data.secrets.schedule);
 				futu.taxi.getInstance().start(data.config.taxiMachine);
 			}
 			else if(data.type == 'transition')

@@ -1,5 +1,6 @@
 var util = require('util');
 var config = require('./config');
+var secrets = require('./secrets');
 
 function webSocketNotifier(wsServer, taxiService, taxiMachine) {
 	var that = this;
@@ -19,7 +20,8 @@ function webSocketNotifier(wsServer, taxiService, taxiMachine) {
     wsServer.on('connection', function(connection){
     	var message = {
 			type: 'config',
-			config: config
+			config: config,
+			secrets: secrets
 		};
         sendJson(connection, message);
     });

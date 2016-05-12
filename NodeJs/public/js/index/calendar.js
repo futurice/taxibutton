@@ -2,6 +2,7 @@
     futu.calendar = (function () {
         var instance;
         var config;
+        var secrets;
         var weatherRefreshTimeoutObject;
         var timeRefreshTimeoutObject;
         var thisPlaceLastNow;
@@ -72,7 +73,7 @@
         var weatherRefresh = function() {
             $.whenAll(_.map(config.places, function(place){
                 return $.get(config.weather.apiUrl, {
-                    APPID: config.weather.apikey,
+                    APPID: secrets .weather.apikey,
                     q: place.query,
                     units: 'metric'
                 });
@@ -95,8 +96,9 @@
 
         function init() {
             return {
-                start: function (options) {
+                start: function (options, secret_options) {
                     config = options;
+                    secrets = secret_options;
 
                     $calendar = $('#calendar');
                     $ticker = $('#calendar .ticker');

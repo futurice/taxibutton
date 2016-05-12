@@ -3,7 +3,7 @@ var events = require('events');
 var http = require('http');
 var querystring = require('querystring');
 
-function smsGate(options) {
+function smsGate(options, secrets) {
 	var that = this;
 
 	this.receive = function(phoneNumber, message) {
@@ -22,8 +22,8 @@ function smsGate(options) {
 		}
 
 		var query = {
-			username: options.credentials.username,
-			password: options.credentials.password,
+			username: secrets.credentials.username,
+			password: secrets.credentials.password,
 			to: phoneNumber,
 			text: message
 		};

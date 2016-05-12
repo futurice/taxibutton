@@ -1,4 +1,5 @@
 var config = require('./config');
+var secrets = require('./secrets');
 var loggerClass = require('./logger')
 var logger = new loggerClass(config.logging.level);
 logger.info('Starting...');
@@ -31,7 +32,7 @@ var appServer = app.listen(config.httpServer.port, function () {
 /* -------------------------------- */
 
 var smsGateClass = require('./smsGate');
-var smsGate = new smsGateClass(config.smsGate);
+var smsGate = new smsGateClass(config.smsGate, secrets.smsGate);
 smsGate.on('sent', function(e){
     logger.info('Sent SMS to %s "%s"', e.phoneNumber, e.message);
 });
