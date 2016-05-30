@@ -97,8 +97,8 @@
             $.get(config.apiUrl, {
                 request: 'lines',
                 format: 'json',
-                user: config.username,
-                pass: config.password,
+                user: secrets.username,
+                pass: secrets.password,
                 query: query,
                 p: '11111'
             }).done(function(data) {
