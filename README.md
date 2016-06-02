@@ -2,7 +2,7 @@
 
 <img src ="https://raw.githubusercontent.com/futurice/taxibutton/master/example_pictures/taxibutton.jpg" width=300>
 
-This is Futurice Taxi Button, system running on Raspberry Pi that can order a taxi with single button press. It also shows current weather conditions and public transport timetables for nearby stops. The system is a nodejs application that displays all the information on index.html page on localhost. 
+This is Futurice Taxi Button, system running on Raspberry Pi that can order a taxi with single button press. It also shows current weather conditions and public transport timetables for nearby stops. The system is a NodeJS application that displays all the information on index.html page on localhost. 
 
 ##Api keys, usernames and passwords
 
@@ -12,9 +12,27 @@ All your api keys, usernames and passwords should be in `Nodejs/secrets.js` file
 * Reittiopas API http://developer.reittiopas.fi/pages/en/http-get-interface-version-2.php for public transport timetables
 * Kannel http://www.kannel.org/ for sending and receiving text messages.
 
+##Configuration
+
+All the configurations besides user credentials can be found in `Nodejs/config.js`. You should fill in at least your local taxi service phone number and the order message. Default locations for weather data are set to Futurice office locations, but that also can be changed in `config.js`. 
+
 ##Setting up the system
 
 We are using Raspberry pi 3 with Raspbian Jessie. The easiest way is to use it with NOOBS setup. https://www.raspberrypi.org/downloads/. A USB GSM dongle is required to send and receive SMS messages. 
+
+###Button configuration
+You need a physical button that is connected to Raspberry Pi with GPIO pins. The button is connected to Ground (Pin# 06) and GPIO18 (Pin# 12) on Raspberry Pi (it has no difference which of two wires is connected where).
+
+Pin pull up resistor configuration:
+
+https://github.com/fivdi/onoff/wiki/Enabling-Pullup-and-Pulldown-Resistors-on-The-Raspberry-Pi
+```
+sudo cp /home/pi/TaxiButton/Repository/RaspberryPi/DeviceTree/mygpio-overlay.dtb /boot/overlays/
+sudo nano /boot/config.txt
+```
+Add to end:
+
+`device_tree_overlay=overlays/mygpio-overlay.dtb`
 
 ###Install NodeJS and dependencies
 Raspbian might have some version of NodeJS pre-installed. If [Node-arm](http://node-arm.herokuapp.com/) install fails, you  might have to remove the old version first. 
@@ -102,7 +120,7 @@ IMPORTANT! change the vendor and product codes to be correct for your device. ls
 
 Install kannel
 
-`sudo apt-get install kannel``
+`sudo apt-get install kannel`
 
 Add kannel user to dialout group:
 
@@ -110,7 +128,7 @@ Add kannel user to dialout group:
  
 Make smsbox to run on startup
 
-`sudo nano /etc/default/kannel``
+`sudo nano /etc/default/kannel`
 
 Comment out wapbox and uncomment smsbox:
 
