@@ -15,8 +15,8 @@ module.exports = {
         "path": "/cgi-bin/sendsms",
     },
     "taxiService": {
-        "phoneNumber": "13170", // Taxi Helsinki number - 13170
-        "orderMessage": "Helsinki Annankatu 34 B  Futurice Oy"
+        "phoneNumber": "YOUR_LOCAL_TAXI_NUMBER", 
+        "orderMessage": "YOUR ADDRESS"
     },
     "button":  {
         "pin": 18, // GPIO pin number, not connector pin number
