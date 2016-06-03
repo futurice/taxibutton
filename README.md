@@ -14,11 +14,11 @@ All your api keys, usernames and passwords should be in `Nodejs/secrets.js` file
 
 ##Configuration
 
-All the configurations besides user credentials can be found in `Nodejs/config.js`. You should fill in at least your local taxi service phone number and the order message. Default locations for weather data are set to Futurice office locations, but that also can be changed in `config.js`. 
+All the configurations besides user credentials can be found in `Nodejs/config.js`. You should fill in at least your local taxi service phone number and the order message. Default locations for weather data are set to Futurice office locations, but that also can be changed in `config.js`. Kannel configurations are in `RaspberryPi/Kannel/kannel.conf'. There is a lot of device-specific data that needs to be adjusted. 
 
 ##Setting up the system
 
-We are using Raspberry pi 3 with Raspbian Jessie. The easiest way is to use it with NOOBS setup. https://www.raspberrypi.org/downloads/. A USB GSM dongle is required to send and receive SMS messages. 
+We are using Raspberry pi 2 with Raspbian Jessie. The easiest way is to use it with NOOBS setup. https://www.raspberrypi.org/downloads/. A USB GSM dongle is required to send and receive SMS messages. 
 
 ###Button configuration
 You need a physical button that is connected to Raspberry Pi with GPIO pins. The button is connected to Ground (Pin# 06) and GPIO18 (Pin# 12) on Raspberry Pi (it has no difference which of two wires is connected where).
@@ -47,7 +47,7 @@ Raspbian might have some version of NodeJS pre-installed. If [Node-arm](http://n
 There is no more Chromium version for Raspbian Jessie, that's why we are using Iceweasel. There is no command line option for kiosk mode in Iceweasel, but with [mKiosk](https://addons.mozilla.org/en-US/firefox/addon/mkiosk) add-on we can achieve the same thing. 
 Install Iceweasel and x11-xserver-utils. Open Iceweasel, settings -> add-ons and install mKiosk. 
 
-`sudo apt-get install iceweasel x11-xserver-utils``
+`sudo apt-get install iceweasel x11-xserver-utils`
 
 Restart Iceweasel after installing mKiosk, and mKiosk configuration panel appears. Set the starting page to be localhost:8080 and disable all navigation bars and user controls. Set mKiosk default screensaver off.
 
@@ -64,7 +64,7 @@ Set script content to be `sleep 5 && iceweasel`
 
 Set the script to be run on GUI startup
 
-`sudo nano .config/lxsession/LXDE-pi/autostart``
+`sudo nano .config/lxsession/LXDE-pi/autostart`
 
 Add to end:
 
@@ -105,7 +105,7 @@ Add to end:
 Don't forget to disable the default screensaver from Iceweasel mKiosk add-on!
 
 ###Install and configure Kannel
-Kannel setup depends a lot on your GSM dongle. If you are running to errors while setting up kannel, the problem might be in differences of physical hardware. 
+Kannel setup depends a lot on your GSM dongle. If you are running to errors while setting up kannel, the problem might be in differences of physical hardware. Remember to put all your device-specific data to `kannel.conf`.
 
 Setup GSM dongle to be detected properly
 ```
@@ -116,7 +116,7 @@ Add a line for your device
 
 `usbserial vendor=0x12d1 product=0x1436`
 
-IMPORTANT! change the vendor and product codes to be correct for your device. lsusb command may be used to check the vendor and product codes of the device.
+IMPORTANT! Change the vendor and product codes to be correct for your device. lsusb command may be used to check the codes of your device.
 
 Install kannel
 
