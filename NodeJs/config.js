@@ -15,7 +15,7 @@ module.exports = {
         "path": "/cgi-bin/sendsms",
     },
     "taxiService": {
-        "phoneNumber": "YOUR_LOCAL_TAXI_NUMBER", 
+        "phoneNumber": "YOUR_LOCAL_TAXI_NUMBER",
         "orderMessage": "YOUR ADDRESS"
     },
     "button":  {
@@ -66,6 +66,11 @@ module.exports = {
                 "name": "München",
                 "query": "Muenchen,DE",
                 "timezone": "Europe/Berlin",
+            },
+            {
+                "name": "Oslo",
+                "query": "Oslo,NO",
+                "timezone": "Europe/Oslo",
             },
             // {
             //     "name": "Helsinki",
