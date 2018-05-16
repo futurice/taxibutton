@@ -83,12 +83,12 @@ module.exports = {
         "refreshInterval": 60 * 60 * 1000, // ms
         "removePastDepaturesInterval": 6 * 1000, // ms
         "switchStopsInterval": 8 * 1000, // ms
-        "apiUrl": "http://api.reittiopas.fi/hsl/prod/",
+        "apiUrl": "https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql",
         "stopCodes": [
-            "1237", // Kamppi(M), Laituri 76 (1237)
-            "1222", // Kamppi(M), Laituri 75 (1222)
-            "0231", // Simonkatu (0231)
-            "0232", // Simonkatu (0232)
+            "HSL:1040144", // Kamppi(M), Laituri 76 (1237)
+            "HSL:1040148", // Kamppi(M), Laituri 75 (1222)
+            "HSL:1040411", // Simonkatu (0231)
+            "HSL:1040410", // Simonkatu (0232)
         ],
     }
 };
