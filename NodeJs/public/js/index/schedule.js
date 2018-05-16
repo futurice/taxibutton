@@ -51,11 +51,10 @@
             _.each(stopResults, function(stopArray, stopIndex) {
                 var departures = stopArray.stoptimesWithoutPatterns;
 
-                var lineCodes = _.chain(departures).map(function(x){return x.code}).uniq().value();
                 var templatesData = _.chain(departures)
                     .map(function (x) {
                         return _.extend({
-                            moment: moment().clone().startOf('day').add('56940','seconds')
+                            moment: moment().clone().startOf('day').add(x.scheduledDeparture,'seconds')
                         }, x);
                     })
                     .sortBy(function(x){return x.moment})
@@ -72,28 +71,6 @@
                 var html = futu.templates.renderMany(depatureTemplate, templatesData);
                 $schedule.find('.stop-' + stopIndex + ' .body').html(html);
             });
-        };
-
-        var getLinesAsync = function(lineCodes, callback) {
-            var deferred = $.Deferred();
-
-            var query = lineCodes.join('|');
-            $.get(config.apiUrl, {
-                request: 'lines',
-                format: 'json',
-                user: secrets.username,
-                pass: secrets.password,
-                query: query,
-                p: '11111'
-            }).done(function(data) {
-                var linesArray = JSON.parse(data);
-                var lines = _.object(_.map(linesArray, function (x) {return x.code}), linesArray);
-                deferred.resolve(lines);
-            }).fail(function() {
-                deferred.reject();
-            });
-
-            return deferred;
         };
 
         var switchStops = function() {
