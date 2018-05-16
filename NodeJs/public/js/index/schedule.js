@@ -13,13 +13,13 @@
 
         var render = function() {
             getStopsDataAsync(config.stopCodes)
-                .done(function() {
-                    var results = _.map(arguments, function(x){return JSON.parse(x[0])});
+                .done(function(data) {
+                    var results = data.data.stops;
                     var templatesData = _.chain(results)
                         .map(function(x, index) {
                             return {
                                 index: index,
-                                stopName: x[0].name_fi
+                                stopName: x.name
                             }
                         })
                         .reverse()
@@ -37,79 +37,40 @@
 
         var refresh = function() {
             getStopsDataAsync(config.stopCodes)
-                .done(function() {
-                    var results = _.map(arguments, function(x){return JSON.parse(x[0])});
+                .done(function(data) {
+                    var results = data.data.stops;
                     updateDeparturesHtml(results);
                 });
         };
 
         var getStopsDataAsync = function(stopCodes) {
-            return $.whenAll(_.map(stopCodes, function(code) {
-                return $.get(config.apiUrl, {
-                    request: 'stop',
-                    format: 'json',
-                    user: secrets.username,
-                    pass: secrets.password,
-                    code: code,
-                    dep_limit: 20,
-                    time_limit: 360,
-                    p: '1110000000100000000'
-                });
-            }));
+            return $.ajax({url: config.apiUrl, type:"POST", data: JSON.stringify({"query": "{ stops(ids: " + JSON.stringify(stopCodes) + "){ name stoptimesWithoutPatterns(numberOfDepartures: 20) { scheduledArrival realtimeArrival arrivalDelay scheduledDeparture realtimeDeparture departureDelay realtime realtimeState serviceDay headsign trip { route { shortName } } } } }" } ), contentType: "application/json", dataType:"json"});
         };
 
         var updateDeparturesHtml = function(stopResults) {
             _.each(stopResults, function(stopArray, stopIndex) {
-                var departures = _.reduce(stopArray, function(memo, x) {
-                    return memo.concat(x.departures);
-                }, []);
+                var departures = stopArray.stoptimesWithoutPatterns;
 
-                var lineCodes = _.chain(departures).map(function(x){return x.code}).uniq().value();
-                getLinesAsync(lineCodes)
-                    .done(function(lines){
-                        var templatesData = _.chain(departures)
-                            .map(function (x) {
-                                return _.extend({
-                                    moment: moment({year: x.date / 10000 >> 0, month: ((x.date / 100 >> 0) % 100) - 1, day: x.date % 100, hour: x.time / 100 >> 0, minute: x.time % 100 })
-                                }, x);
-                            })
-                            .sortBy(function(x){return x.moment})
-                            .map(function(x) {
-                                return {
-                                    lineCodeShort: lines[x.code].code_short,
-                                    lineEnd: lines[x.code].line_end,
-                                    formattedTime: x.moment.format('HH:mm'),
-                                    isoDateTime: x.moment.toISOString()
-                                };
-                            })
-                            .value();
+                var templatesData = _.chain(departures)
+                    .map(function (x) {
+                        return _.extend({
+                            moment: moment().clone().startOf('day').add(x.scheduledDeparture,'seconds')
+                        }, x);
+                    })
+                    .sortBy(function(x){return x.moment})
+                    .map(function(x) {
+                        return {
+                            lineCodeShort: x.trip.route.shortName,
+                            lineEnd: x.headsign,
+                            formattedTime: x.moment.format('HH:mm'),
+                            isoDateTime: x.moment.toISOString()
+                        };
+                    })
+                    .value();
 
-                        var html = futu.templates.renderMany(depatureTemplate, templatesData);
-                        $schedule.find('.stop-' + stopIndex + ' .body').html(html);
-                    });
+                var html = futu.templates.renderMany(depatureTemplate, templatesData);
+                $schedule.find('.stop-' + stopIndex + ' .body').html(html);
             });
-        };
-
-        var getLinesAsync = function(lineCodes, callback) {
-            var deferred = $.Deferred();
-
-            var query = lineCodes.join('|');
-            $.get(config.apiUrl, {
-                request: 'lines',
-                format: 'json',
-                user: secrets.username,
-                pass: secrets.password,
-                query: query,
-                p: '11111'
-            }).done(function(data) {
-                var linesArray = JSON.parse(data);
-                var lines = _.object(_.map(linesArray, function (x) {return x.code}), linesArray);
-                deferred.resolve(lines);
-            }).fail(function() {
-                deferred.reject();
-            });
-
-            return deferred;
         };
 
         var switchStops = function() {
@@ -130,7 +91,7 @@
                 var now = moment().add(-1, 'm');
                 var departure = moment($(this).data('isoDateTime'));
                 if(now < departure) return;
-                
+
                 $(this).fadeOut({
                     duration: 500,
                     done: function() {
@@ -162,7 +123,7 @@
                 }
             };
         };
-         
+
         return {
             getInstance: function () {
                 if (!instance)
