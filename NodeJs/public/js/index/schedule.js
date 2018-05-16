@@ -44,7 +44,7 @@
         };
 
         var getStopsDataAsync = function(stopCodes) {
-            return $.ajax({url: config.apiUrl, type:"POST", data: JSON.stringify({"query": "{ stops(ids: " + JSON.stringify(stopCodes) + "){ name stoptimesWithoutPatterns { scheduledArrival realtimeArrival arrivalDelay scheduledDeparture realtimeDeparture departureDelay realtime realtimeState serviceDay headsign trip { route { shortName } } } } }" } ), contentType: "application/json", dataType:"json"});
+            return $.ajax({url: config.apiUrl, type:"POST", data: JSON.stringify({"query": "{ stops(ids: " + JSON.stringify(stopCodes) + "){ name stoptimesWithoutPatterns(numberOfDepartures: 20) { scheduledArrival realtimeArrival arrivalDelay scheduledDeparture realtimeDeparture departureDelay realtime realtimeState serviceDay headsign trip { route { shortName } } } } }" } ), contentType: "application/json", dataType:"json"});
         };
 
         var updateDeparturesHtml = function(stopResults) {
